@@ -69,6 +69,8 @@
     #grid.list .card .info { flex: 1; }
     #grid.list .card .cname { font-size: 13px; }
     ::-webkit-scrollbar { width: 4px; } ::-webkit-scrollbar-track { background: #000; } ::-webkit-scrollbar-thumb { background: #333; border-radius: 2px; }
+    #audio-btn { position: fixed; bottom: 1.5rem; right: 1.5rem; z-index: 999; background: transparent; border: 1px solid rgba(255,255,255,0.25); color: rgba(255,255,255,0.5); font-family: Georgia, serif; font-size: 11px; letter-spacing: 0.15rem; padding: 7px 14px; cursor: pointer; text-transform: uppercase; transition: all 0.2s; border-radius: 3px; }
+    #audio-btn:hover { color: #fff; border-color: rgba(255,255,255,0.6); }
   </style>
 </head>
 <body>
@@ -123,6 +125,8 @@
   </div>
   <div id="grid"></div>
 </div>
+<audio id="bg-audio" src="/assets/audio/ambient.mp3" loop preload="auto" playsinline></audio>
+<button id="audio-btn" onclick="toggleAudio()">♪ MUTE</button>
 <script src="sky0.js"></script>
 <script src="sky1.js"></script>
 <script src="sky2.js"></script>
@@ -134,5 +138,26 @@
 <script src="nfts.js"></script>
 <script src="new.js?v=10"></script>
 <script src="app.js"></script>
+<script>
+  (function(){
+    var audio = document.getElementById('bg-audio');
+    var btn = document.getElementById('audio-btn');
+    var started = false;
+    var muted = false;
+    function startAudio() {
+      if (started) return;
+      audio.volume = 0.35;
+      audio.play().then(function(){ started = true; }).catch(function(){});
+    }
+    window.toggleAudio = function() {
+      if (!started) { startAudio(); muted = false; btn.textContent = '♪ MUTE'; return; }
+      muted = !muted;
+      audio.muted = muted;
+      btn.textContent = muted ? '♪ PLAY' : '♪ MUTE';
+    };
+    document.addEventListener('touchstart', startAudio, { once: true, passive: true });
+    document.addEventListener('click', startAudio, { once: true });
+  })();
+</script>
 </body>
 </html>
