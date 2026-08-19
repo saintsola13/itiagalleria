@@ -4,5 +4,5 @@
   extra.forEach(function(n){
     n.img = n.tmp || n.img;
   });
-  NFTS = extra.concat(NFTS);
+  for (var i = extra.length - 1; i >= 0; i--) NFTS.unshift(extra[i]);
 })();
