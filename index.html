@@ -127,6 +127,8 @@
   <div id="grid"></div>
 </div>
 
+<script src="clouds-a.js"></script>
+<script src="clouds-b.js"></script>
 <script src="nfts.js"></script>
 <script>
 const CONTRACT = '0x0bec5e0483db9b09946c0b37d243d8d8393a6d12';
@@ -232,6 +234,10 @@ let dwPaused = false, dwPauseOffset = 0, dwPauseStart = 0, dwCloudStart = 0;
 let dwHintTimer = null;
 const dwTint = document.getElementById('dw-tint');
 const dwClouds = document.getElementById('dw-clouds');
+if (window.ITIA_CLOUDS) {
+  dwClouds.style.background = "radial-gradient(ellipse at 30% 20%, #e8eef6 0%, #c5d3e4 40%, #9eb0c8 100%), url('"+ITIA_CLOUDS+"') center center / cover no-repeat";
+}
+
 const dwHint = document.getElementById('dw-pause-hint');
 
 function dwShowHint(text) {
