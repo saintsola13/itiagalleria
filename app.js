@@ -103,20 +103,7 @@ const dwTint = document.getElementById('dw-tint');
 const dwClouds = document.getElementById('dw-clouds');
 function dwApplySky() {
   const img = document.getElementById('dw-cloud-img');
-  const c = document.createElement('canvas');
-  c.width = 1400; c.height = 1000;
-  const g = c.getContext('2d');
-  const sky = g.createLinearGradient(0,0,0,1000);
-  sky.addColorStop(0,'#e8eff7'); sky.addColorStop(0.45,'#d4deea'); sky.addColorStop(1,'#b7c4d4');
-  g.fillStyle = sky; g.fillRect(0,0,1400,1000);
-  function puff(x,y,rx,ry,a){
-    const grd=g.createRadialGradient(x,y,0,x,y,Math.max(rx,ry));
-    grd.addColorStop(0,'rgba(255,255,255,'+a+')');
-    grd.addColorStop(1,'rgba(255,255,255,0)');
-    g.fillStyle=grd; g.beginPath(); g.ellipse(x,y,rx,ry,0,0,Math.PI*2); g.fill();
-  }
-  [[220,180,260,140,0.7],[620,220,340,160,0.75],[980,160,280,130,0.65],[400,420,300,150,0.55],[860,480,360,170,0.6],[180,620,240,120,0.45],[1100,640,280,140,0.5],[700,720,320,130,0.4]].forEach(function(p){ puff(p[0],p[1],p[2],p[3],p[4]); });
-  img.src = c.toDataURL('image/jpeg',0.85);
+  if (window.ITIA_CLOUDS) img.src = window.ITIA_CLOUDS;
 }
 dwApplySky();
 
@@ -171,7 +158,7 @@ function dwAnimateTint(now) {
   dwCur.r += (dwTgt.r - dwCur.r) * spd;
   dwCur.g += (dwTgt.g - dwCur.g) * spd;
   dwCur.b += (dwTgt.b - dwCur.b) * spd;
-  dwTint.style.background = 'rgba(' + Math.round(dwCur.r) + ',' + Math.round(dwCur.g) + ',' + Math.round(dwCur.b) + ',0.22)';
+  dwTint.style.background = 'rgba(' + Math.round(dwCur.r) + ',' + Math.round(dwCur.g) + ',' + Math.round(dwCur.b) + ',0.08)';
   dwBgRAF = requestAnimationFrame(dwAnimateTint);
 }
 function startDreamWalk() {
@@ -183,7 +170,7 @@ function startDreamWalk() {
   dwIdxL = 0; dwIdxR = 0; dwLanes = [];
   dwPaused = false; dwPauseOffset = 0;
   dwCur = {r:255,g:255,b:255}; dwTgt = {r:255,g:255,b:255};
-  dwTint.style.background = 'rgba(255,255,255,0.18)';
+  dwTint.style.background = 'rgba(255,255,255,0.05)';
   const now = performance.now();
   dwCloudStart = now; dwLastL = now - 3400; dwLastR = now - 1700;
   dwCloudRAF = requestAnimationFrame(dwAnimateClouds);
@@ -202,7 +189,7 @@ function dwSpawn(side, now) {
   const base = dwBaseSize();
   const img = document.createElement('img');
   img.src = nft.img; img.dataset.nftId = String(nft.id);
-  img.style.cssText = 'width:'+base+'px;height:'+base+'px;object-fit:cover;border-radius:4px;box-shadow:0 20px 70px rgba(0,0,0,0.18);cursor:pointer;';
+  img.style.cssText = 'width:'+base+'px;height:'+base+'px;object-fit:cover;border-radius:4px;box-shadow:0 20px 70px rgba(0,0,0,0.28);cursor:pointer;';
   const label = document.createElement('div'); label.className = 'dw-label'; label.textContent = nft.name;
   el.appendChild(img); el.appendChild(label);
   el.style.cssText = 'position:absolute;left:50%;display:flex;flex-direction:column;align-items:center;gap:10px;will-change:transform,opacity;opacity:0;';
