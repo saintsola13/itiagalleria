@@ -1,10 +1,10 @@
 const NFTS = (function(){
   const S='https://i2c.seadn.io/ethereum/0x0bec5e0483db9b09946c0b37d243d8d8393a6d12/';
-  const W='https://ithinkitsart.com/wp-content/uploads/2026/03/';
-  const C = `w1|Iris Hill|w:388-Iris-Hill-848x1060.jpeg|235,230,228
-w2|Laura See The Future|w:385-LAURA-See-The-Future-848x1060.jpeg|228,230,235
-w3|Paranoia|w:420-Paranoia-848x1060.jpeg|230,228,235
-w4|Saw The Fire|w:283-Saw-The-Fire-848x1060.png|235,225,220
+  const W='/assets/gallery/';
+  const C = `w1|Iris Hill|w:iris-hill.jpg|235,230,228
+w2|Laura See The Future|w:laura-see-the-future.jpg|228,230,235
+w3|Paranoia|w:paranoia.jpg|230,228,235
+w4|Saw The Fire|w:saw-the-fire.png|235,225,220
 1|Staredown|s:f4ffc6a07abe57efe58b538185aa28/b5f4ffc6a07abe57efe58b538185aa28.jpeg?w=350|196,193,207
 2|Beam me up|s:23332707ac1aa70acbb2932637d5f2/c023332707ac1aa70acbb2932637d5f2.jpeg?w=350|202,191,198
 3|Breakdown|s:72d6253f761185ff90e68b0cdbea3d/f572d6253f761185ff90e68b0cdbea3d.jpeg?w=350|209,205,201
