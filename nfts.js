@@ -1,261 +1,259 @@
 const NFTS = (function(){
-  const S='https://i2c.seadn.io/ethereum/0x0bec5e0483db9b09946c0b37d243d8d8393a6d12/';
   const W='/assets/gallery/';
   const C = `w1|Iris Hill|w:iris-hill.jpg|235,230,228
 w2|Laura See The Future|w:laura-see-the-future.jpg|228,230,235
 w3|Paranoia|w:paranoia.jpg|230,228,235
 w4|Saw The Fire|w:saw-the-fire.png|235,225,220
-1|Staredown|s:f4ffc6a07abe57efe58b538185aa28/b5f4ffc6a07abe57efe58b538185aa28.jpeg?w=350|196,193,207
-2|Beam me up|s:23332707ac1aa70acbb2932637d5f2/c023332707ac1aa70acbb2932637d5f2.jpeg?w=350|202,191,198
-3|Breakdown|s:72d6253f761185ff90e68b0cdbea3d/f572d6253f761185ff90e68b0cdbea3d.jpeg?w=350|209,205,201
-4|Bubble eye|s:f4275583e1a6d89639f826558aab04/2df4275583e1a6d89639f826558aab04.jpeg?w=350|216,193,202
-5|Can't change the roots|s:a6915378a761f14a5ad5b956e6bcb9/bea6915378a761f14a5ad5b956e6bcb9.jpeg?w=350|222,214,179
-6|Controlled insanity|s:f4e9a6d2aa89499c27fe9b07beb0ad/2cf4e9a6d2aa89499c27fe9b07beb0ad.jpeg?w=350|192,208,220
-7|Another perspective|s:a291fbb891788d774ee699ec5731b6/7ea291fbb891788d774ee699ec5731b6.png?w=350|196,195,207
-8|Going for a long walk|s:80696b206b76ad309527030f1c8368/9780696b206b76ad309527030f1c8368.jpeg?w=350|202,195,215
-9|Dark meadow|s:b540a1cdf15e6f1cb1d336c67fff34/97b540a1cdf15e6f1cb1d336c67fff34.jpeg?w=350|200,183,182
-10|Eye in the sky|s:060e200ca7887ca03a3bdb75f97f38/02060e200ca7887ca03a3bdb75f97f38.jpeg?w=350|188,194,211
-11|Black kitty|s:4929cbab1551a25b1f72f6dd0df422/554929cbab1551a25b1f72f6dd0df422.jpeg?w=350|203,176,187
-12|Hungry Virus|s:aad215fbd62ec0f37cc927a697ce9d/feaad215fbd62ec0f37cc927a697ce9d.jpeg?w=350|208,186,204
-13|Crop hustle|s:a13de8284ea4a1851ab3b7339cd2d0/4ca13de8284ea4a1851ab3b7339cd2d0.jpeg?w=350|194,197,193
-14|Cloudy knowledge|s:fd9925fcfeb2b177b45ca3bb09db27/f3fd9925fcfeb2b177b45ca3bb09db27.jpeg?w=350|190,206,217
-15|Utopia|s:142b8bca4260515a2109e5ce6fb79b/2c142b8bca4260515a2109e5ce6fb79b.jpeg?w=350|218,202,208
-16|Welfare|s:86c3725b5d7aa4efcbde44d87a1d17/ef86c3725b5d7aa4efcbde44d87a1d17.jpeg?w=350|213,198,221
-17|Beyond the screen|s:5fbb2008feb649a059586c78d383e2/1a5fbb2008feb649a059586c78d383e2.jpeg?w=350|180,179,213
-18|Pastelized|s:d8793be305fc968e255bd0c2ba11bf/11d8793be305fc968e255bd0c2ba11bf.jpeg?w=350|198,209,215
-19|Existence|s:c36b3e1689b8b20d0e482aaeda1eea/20c36b3e1689b8b20d0e482aaeda1eea.jpeg?w=350|189,207,223
-20|Mind explosion|s:5dc5c49a3ce2a037cc0b4a09050b92/e15dc5c49a3ce2a037cc0b4a09050b92.jpeg?w=350|212,221,219
-21|Apologize|s:cb14d424d2fe823fd0c459fdd8ad3d/7acb14d424d2fe823fd0c459fdd8ad3d.jpeg?w=350|220,216,227
-22|Stranger kites|s:cc0b4a51785250fb7581a080db7872/8fcc0b4a51785250fb7581a080db7872.jpeg?w=350|189,192,215
-23|Peace|s:90390c28470303fcf09d5077cbda6e/fd90390c28470303fcf09d5077cbda6e.jpeg?w=350|195,189,207
-24|Zoom|s:a564e9ef4fbb5af636015afa82a840/81a564e9ef4fbb5af636015afa82a840.jpeg?w=350|225,208,200
-25|Paranoia|s:dc987442e291f966f1b1b1e990454a/23dc987442e291f966f1b1b1e990454a.jpeg?w=350|197,213,237
-26|Sky is the limit|s:6fe3fb971b403fd15da6211eedcbbc/486fe3fb971b403fd15da6211eedcbbc.jpeg?w=350|190,205,217
-27|What?|s:49af44a7ffba60f8ed257f130d1590/c349af44a7ffba60f8ed257f130d1590.jpeg?w=350|191,191,224
-28|Way Home|s:035b0d0aa2e225fe77f79a01950a8f/89035b0d0aa2e225fe77f79a01950a8f.jpeg?w=350|189,209,191
-29|Actions, not words|s:d04a1be8342c53ce02b735aa357427/1cd04a1be8342c53ce02b735aa357427.png?w=350|215,214,198
-30|Suits|s:2898b359bb7e515b9263639619f568/ac2898b359bb7e515b9263639619f568.jpeg?w=350|206,203,212
-31|Next|s:52201c48c4724fb3f00a177419fa7c/9052201c48c4724fb3f00a177419fa7c.jpeg?w=350|176,175,219
-32|Melting Pot|s:90cf051384632edfd07346b5267271/2d90cf051384632edfd07346b5267271.jpeg?w=350|221,214,203
-33|United|s:678fbf2f9b5fb6b0a16b55084f6c34/e3678fbf2f9b5fb6b0a16b55084f6c34.jpeg?w=350|198,199,193
-34|Shadow of mine|s:8ef80694b05303d3305ed200cf5f49/ad8ef80694b05303d3305ed200cf5f49.jpeg?w=350|196,203,213
-35|Beatle|s:5dd4b70025f90b3f21f172a52c722d/635dd4b70025f90b3f21f172a52c722d.png?w=350|219,210,198
-36|Break my soul|s:a364997e63bc1feac4a11535fd6cef/59a364997e63bc1feac4a11535fd6cef.png?w=350|198,190,193
-37|Twoface|s:e83b02b4a2aa8b47febdab3e4d26c5/7ae83b02b4a2aa8b47febdab3e4d26c5.jpeg?w=350|198,191,207
-38|Toxic|s:94885949af16062a4fd6076ae12330/9894885949af16062a4fd6076ae12330.png?w=350|193,186,197
-39|Rosary|s:d44cf55898e7500ea514da5915c591/68d44cf55898e7500ea514da5915c591.png?w=350|231,198,193
-40|The Watchfull Cyclopean|s:4b8c3ee15f3ae1f15c4e0b6fcf7536/784b8c3ee15f3ae1f15c4e0b6fcf7536.jpeg?w=350|199,197,218
-41|Someday|s:ff0425cea80bc24736b599cf1eb79b/e9ff0425cea80bc24736b599cf1eb79b.jpeg?w=350|194,202,204
-42|Luminara|s:8c444f52b31c89f54ad8d9644b40cb/bc8c444f52b31c89f54ad8d9644b40cb.png?w=350|199,187,220
-43|The other side|s:20655b05598970b7acf839d13ab46d/2720655b05598970b7acf839d13ab46d.jpeg?w=350|190,186,208
-44|Red velvet|s:e9f7525fdf5902bd24a6e089041a7f/b7e9f7525fdf5902bd24a6e089041a7f.jpeg?w=350|195,193,206
-45|I Miss You|s:dda0edff57df365d4e4d8b715c033f/07dda0edff57df365d4e4d8b715c033f.jpeg?w=350|206,194,184
-47|Toxic River|s:dfe52076617fb39026b193f202d086/f9dfe52076617fb39026b193f202d086.png?w=350|174,192,226
-48|Holographic Kissed|s:aca912cf5e054fb9c24aab508fee7d/4faca912cf5e054fb9c24aab508fee7d.jpeg?w=350|206,209,215
-49|Mindblowing|s:5cf3caf76e1f8c2a1920462112216a/485cf3caf76e1f8c2a1920462112216a.png?w=350|188,176,213
-51|Garden Eden|s:9f53ab0da1c17fc3a4191d1b2f03bc/689f53ab0da1c17fc3a4191d1b2f03bc.jpeg?w=350|186,187,207
-52|The Leader|s:1affdc6ce59c4704a0a06f7d902078/ed1affdc6ce59c4704a0a06f7d902078.jpeg?w=350|186,189,193
-53|Solid|s:05fd9908a4b9a49f4bf8eb07ad1c65/6b05fd9908a4b9a49f4bf8eb07ad1c65.png?w=350|195,180,186
-54|Skyline|s:0472cedf68ead046a261a5e42cd8f1/880472cedf68ead046a261a5e42cd8f1.jpeg?w=350|191,185,209
-55|Bright Beauty|s:43626249cb475c7cbdab5fb41f6ee8/f743626249cb475c7cbdab5fb41f6ee8.jpeg?w=350|224,218,231
-56|Romeo|s:7223a140b46f6c56b25fe97bff5d6f/8d7223a140b46f6c56b25fe97bff5d6f.jpeg?w=350|200,182,195
-57|Professor|s:8026da71454c3ead6316cad13ec74e/748026da71454c3ead6316cad13ec74e.png?w=350|199,204,209
-58|Why?|s:7f419c0af474ba06311fee506eb037/817f419c0af474ba06311fee506eb037.jpeg?w=350|179,195,212
-59|Bubble Fusion|s:1a6dc92ce6583c212a6c1e9247a617/751a6dc92ce6583c212a6c1e9247a617.png?w=350|209,204,219
-60|Wonderland|s:8b5f2dadf994c507a9c332d362fb08/098b5f2dadf994c507a9c332d362fb08.jpeg?w=350|202,199,204
-61|Bonded|s:cbcf1b64c79dbcf0740fd9e66f40a5/c5cbcf1b64c79dbcf0740fd9e66f40a5.jpeg?w=350|187,197,199
-62|Life Goes On|s:cc9d95540925aac39f2d2052d32f2b/3ccc9d95540925aac39f2d2052d32f2b.jpeg?w=350|210,175,187
-63|Spit It Out|s:d7da1c9eb0100f23bf4e2f90c9cd08/99d7da1c9eb0100f23bf4e2f90c9cd08.png?w=350|190,186,211
-64|Destruction|s:576447e4da3d3c1cac93d71fb9d632/c0576447e4da3d3c1cac93d71fb9d632.png?w=350|212,192,188
-65|No Plan B|s:5adc7862bc150dc762f6ffeaceab9a/535adc7862bc150dc762f6ffeaceab9a.jpeg?w=350|212,202,197
-66|Trapped In The Bubble|s:a2e07e8da36369bdb5b0427bda73fd/07a2e07e8da36369bdb5b0427bda73fd.png?w=350|203,203,218
-67|Saw The Fire|s:418d91a3943034d79647296fc7bcaf/89418d91a3943034d79647296fc7bcaf.png?w=350|202,189,204
-68|Wonderland|s:8b5f2dadf994c507a9c332d362fb08/098b5f2dadf994c507a9c332d362fb08.jpeg?w=350|202,199,204
-69|Headshot|s:761d5bb8baac97b1e3bc7b59ba0eb2/09761d5bb8baac97b1e3bc7b59ba0eb2.png?w=350|185,190,229
-70|Too Cool|s:930e5722f87306325eb4e32f71cebe/47930e5722f87306325eb4e32f71cebe.jpeg?w=350|207,174,186
-71|Sense Of Belonging|s:ed476e7a56bf62dc2e18affc5b31dc/33ed476e7a56bf62dc2e18affc5b31dc.png?w=350|180,192,202
-72|Aquarell|s:bd1446861e570076e6fb4c68bb9ed6/68bd1446861e570076e6fb4c68bb9ed6.jpeg?w=350|202,208,207
-73|Soulfire|s:66f61a828351600b703972b7ba5025/9b66f61a828351600b703972b7ba5025.png?w=350|203,193,188
-74|Mystic Lake|s:777c0e9a745d8d34c217fdeeefb4d2/84777c0e9a745d8d34c217fdeeefb4d2.jpeg?w=350|178,183,203
-75|Tired|s:2e72fa9a1ecb81cd4b42e2f321a485/b52e72fa9a1ecb81cd4b42e2f321a485.jpeg?w=350|217,220,243
-76|Cyberphobia|s:a6f98e7579cd8212d608a42c8d656d/33a6f98e7579cd8212d608a42c8d656d.jpeg?w=350|189,176,188
-77|See The Future|s:394ffd24d1323e7c69e3c1c92c7f51/72394ffd24d1323e7c69e3c1c92c7f51.jpeg?w=350|199,195,194
-78|Sage|s:cbd328d9c114cb6b2c1d504f6d49d1/00cbd328d9c114cb6b2c1d504f6d49d1.jpeg?w=350|199,187,209
-79|Cyberpink|s:47e3c2100cdb66972d164cfa4526e1/f747e3c2100cdb66972d164cfa4526e1.jpeg?w=350|210,203,226
-80|Forgotten|s:4d72f7e37688bf902bc0bdaf786bdd/b84d72f7e37688bf902bc0bdaf786bdd.png?w=350|185,194,207
-81|Dragon Soul|s:b23f811a585da65f8d99d70a22d2a6/e5b23f811a585da65f8d99d70a22d2a6.png?w=350|212,185,188
-82|Fractional|s:fb6bc62a3f696753880076ce1aeace/21fb6bc62a3f696753880076ce1aeace.jpeg?w=350|187,188,188
-83|Man In The Mirror|s:2e387e900fc9e176304ef50524732e/f02e387e900fc9e176304ef50524732e.jpeg?w=350|187,194,197
-84|Passion|s:bc4db87bc79382216383afb3d976dc/e1bc4db87bc79382216383afb3d976dc.jpeg?w=350|203,179,186
-85|Pose|s:837a691ad64986ed8dbcb4f37e6f6e/b1837a691ad64986ed8dbcb4f37e6f6e.jpeg?w=350|186,195,194
-86|Overthinker|s:b33d9c58e2f9661c7c84a37b6eab1a/c7b33d9c58e2f9661c7c84a37b6eab1a.png?w=350|200,197,211
-87|Every Drop Of Me|s:e72b88ce8e3c9a9b4cef16980a8b21/2ce72b88ce8e3c9a9b4cef16980a8b21.jpeg?w=350|199,200,208
-88|Iris Hill|s:6772b35fd6f747f5404fe2b97e28dd/6d6772b35fd6f747f5404fe2b97e28dd.jpeg?w=350|184,192,209
-89|Belife|s:2d97d1b662d3ae86e4a7869249bcf7/d12d97d1b662d3ae86e4a7869249bcf7.jpeg?w=350|214,195,214
-90|The Waiter|s:4f3db0a113a2cbed48c29db63b1788/e14f3db0a113a2cbed48c29db63b1788.jpeg?w=350|192,207,203
-91|Spotlight|s:d22dfb675eadeae5a7da333c0bc1c5/45d22dfb675eadeae5a7da333c0bc1c5.png?w=350|189,186,219
-92|Nothing Matters|s:74e3eea1545cd6ac1cf0817ee6d9bc/7974e3eea1545cd6ac1cf0817ee6d9bc.jpeg?w=350|203,185,187
-93|Control|s:3759bee12fd1a8bc705a15856ace76/033759bee12fd1a8bc705a15856ace76.png?w=350|185,182,227
-95|Aristocracy|s:d15b38def1369098f31efe4f8c9c16/50d15b38def1369098f31efe4f8c9c16.jpeg?w=350|190,195,211
-96|Here For You|s:ccd3d1e9c32548d71e268f7f9e5c42/d2ccd3d1e9c32548d71e268f7f9e5c42.jpeg?w=350|178,182,180
-97|Couple Chaos|s:9076f7e0c00d05f42c1dcfe5208588/c59076f7e0c00d05f42c1dcfe5208588.png?w=350|189,189,199
-99|Addicted To You|s:4ef2b66c336c84e1653040fc576f6f/c04ef2b66c336c84e1653040fc576f6f.jpeg?w=350|211,206,234
-100|Feel the Presence|s:20ec05a6c994fc2524dabb580d4ca0/f220ec05a6c994fc2524dabb580d4ca0.jpeg?w=350|184,198,185
-101|Volatility|s:0f08f72b8af9281ac05ce3bd4ddd17/a50f08f72b8af9281ac05ce3bd4ddd17.png?w=350|199,188,198
-102|Fluffy Mission|s:579d334b19ede36944cbb0ec6a7945/98579d334b19ede36944cbb0ec6a7945.jpeg?w=350|193,193,199
-103|Soultaker|s:2531c1a42d79812192870c41a7ba54/502531c1a42d79812192870c41a7ba54.png?w=350|193,179,221
-104|Blue Horizon|s:30e7f062387fadba8a8f20a21eed23/0430e7f062387fadba8a8f20a21eed23.jpeg?w=350|183,197,224
-105|Love And Death|s:905c96ba6c46e73e5113ef4c4f695e/62905c96ba6c46e73e5113ef4c4f695e.png?w=350|200,187,189
-106|Overthinked|s:ec0ed79dedee3fae29e3b7161c9199/c6ec0ed79dedee3fae29e3b7161c9199.jpeg?w=350|177,186,195
-107|Endless Stare|s:b53afe1c838bc56d13908069f518ab/1db53afe1c838bc56d13908069f518ab.jpeg?w=350|194,183,210
-108|Flower Power|s:e03b492145f3260d5137affb661bc9/b7e03b492145f3260d5137affb661bc9.jpeg?w=350|218,210,207
-109|Soullake|s:cb62393ee8688f4294918e64ba43b0/00cb62393ee8688f4294918e64ba43b0.jpeg?w=350|203,194,219
-110|Something Behind|s:e74cf89f3d7ac7d88833902d337196/08e74cf89f3d7ac7d88833902d337196.png?w=350|187,193,212
-111|The Rise|s:ab2e4bf439b34a9a750334dd00e9aa/c2ab2e4bf439b34a9a750334dd00e9aa.png?w=350|179,186,210
-112|Bloody Sky|s:9bde93d8f73fe68b66adc46cc1661a/7f9bde93d8f73fe68b66adc46cc1661a.jpeg?w=350|194,190,192
-113|Innocent Love|s:d00e00b121dcc9b97ce4db9b978d00/5bd00e00b121dcc9b97ce4db9b978d00.jpeg?w=350|193,178,200
-114|Who Am I|s:863a774d2bc3eedb38b05c74e9e4cb/a2863a774d2bc3eedb38b05c74e9e4cb.png?w=350|187,191,219
-115|Dazzle|s:3a1044ae0b17fbb4eaa0ab34e22632/603a1044ae0b17fbb4eaa0ab34e22632.jpeg?w=350|207,205,205
-116|Belle|s:bce58f67a80cb85352172ec0db93b3/4ebce58f67a80cb85352172ec0db93b3.png?w=350|191,200,230
-117|Split|s:177d19027e2d1f2954c2e252f70753/69177d19027e2d1f2954c2e252f70753.png?w=350|195,192,220
-118|Not Interested|s:9d1fee1e6e2101eb2addef59c0f5cb/ab9d1fee1e6e2101eb2addef59c0f5cb.jpeg?w=350|196,186,204
-119|Drawn Together|s:574eeb6e2e8df0569b31ad668c352c/d5574eeb6e2e8df0569b31ad668c352c.png?w=350|201,199,218
-120|Fake Love|s:ae6f56175c9ff28522e11d825047ac/e0ae6f56175c9ff28522e11d825047ac.png?w=350|186,190,200
-121|Inspiration|s:eb6e1f488ce6fe68140cd1f3a99fc8/90eb6e1f488ce6fe68140cd1f3a99fc8.jpeg?w=350|200,189,203
-122|Stepped Away|s:6c6de5d6144e623d59d8bd0d729960/e76c6de5d6144e623d59d8bd0d729960.jpeg?w=350|183,189,222
-123|Bacillus|s:d377b0ff92d7cc525dd122597a8993/ebd377b0ff92d7cc525dd122597a8993.png?w=350|197,195,209
-124|Edge Of Time|s:9df893c6f26066bab5d9c77e581926/e89df893c6f26066bab5d9c77e581926.jpeg?w=350|189,187,208
-125|Iridescent|s:1140ec67d87e494dc5aa61a4d2c629/671140ec67d87e494dc5aa61a4d2c629.png?w=350|200,199,204
-126|Mind Orbit|s:51fb1eb2de0a2e7641e4362f0d5114/ee51fb1eb2de0a2e7641e4362f0d5114.png?w=350|200,188,214
-127|Fluorescat|s:f3daa2afead77a7c08ea80ef87dc38/dbf3daa2afead77a7c08ea80ef87dc38.png?w=350|186,187,184
-128|Overprotection|s:78bcdcd85de54da1cbd90b03d8d3e8/9878bcdcd85de54da1cbd90b03d8d3e8.png?w=350|202,206,227
-129|Highly Connected|s:ad132b252af3bbebb37d91576179a4/d0ad132b252af3bbebb37d91576179a4.png?w=350|189,186,222
-130|Empty Wideness|s:b2ceff9ff7b78eaa6f3ee2f4e6c097/6fb2ceff9ff7b78eaa6f3ee2f4e6c097.jpeg?w=350|184,187,197
-131|Bloody Taste|s:76b2ff8aa1ef9d42786b1e01a79783/4176b2ff8aa1ef9d42786b1e01a79783.png?w=350|205,201,208
-132|Beauty In Chaos|s:cd4c357df97a7c100aac3b502e5e8d/05cd4c357df97a7c100aac3b502e5e8d.jpeg?w=350|180,184,200
-133|Reality Check|s:41832c36cc74fa90c25e10274f1ced/4141832c36cc74fa90c25e10274f1ced.jpeg?w=350|181,195,198
-134|Angels In My Mind|s:c39f5715c5795ca8781f6e57a8e5bc/a7c39f5715c5795ca8781f6e57a8e5bc.png?w=350|181,179,213
-135|Floral Fantasy|s:e9d7a92424e805ba2664fe15699ef7/dae9d7a92424e805ba2664fe15699ef7.jpeg?w=350|196,192,195
-136|Rising Star|s:41e54b947a9b28ec3f938b6a68f7f9/b541e54b947a9b28ec3f938b6a68f7f9.png?w=350|204,195,200
-137|Think About Robin|s:d45c79ca9051dfae34fbdf4f8b7f3d/edd45c79ca9051dfae34fbdf4f8b7f3d.jpeg?w=350|213,208,178
-138|What Are You Hiding|s:efccdcb695c8cc2c9134ec9e517eff/37efccdcb695c8cc2c9134ec9e517eff.png?w=350|201,183,201
-139|Roots Of Imagination|s:9447a188797eccf19c497698d8a12b/3b9447a188797eccf19c497698d8a12b.jpeg?w=350|192,189,188
-140|Feel The Force|s:33403850a063679f4a750907d72b68/a833403850a063679f4a750907d72b68.png?w=350|192,180,223
-141|Plant Your Deeams|s:30945da4007ddd2521729a6faeea84/9a30945da4007ddd2521729a6faeea84.jpeg?w=350|219,205,211
-142|The Last Step|s:37a96b6c3f30fe4d18252de2090c8c/d337a96b6c3f30fe4d18252de2090c8c.jpeg?w=350|183,193,204
-143|Fade Away|s:aef7968d45d36b4f14bd4391f90e7a/91aef7968d45d36b4f14bd4391f90e7a.png?w=350|197,197,211
-144|Involuntary Transformation|s:896fbf93fb07834d064486738802b2/13896fbf93fb07834d064486738802b2.png?w=350|208,187,215
-145|Rainbow Kissed|s:0f9e3fff3785cee4f0d5d4151fcac9/790f9e3fff3785cee4f0d5d4151fcac9.png?w=350|207,205,221
-146|Cozy Cup|s:a609e7cfe936cac8aaf1af1c7b49d0/dba609e7cfe936cac8aaf1af1c7b49d0.jpeg?w=350|198,199,209
-147|Little Touch Of Self-Awareness|s:8e34e408579aed246b539b2e050a14/fb8e34e408579aed246b539b2e050a14.png?w=350|206,198,223
-149|Always Behind You|s:6f68ce6d57d5ab68e7b9285d38594b/6d6f68ce6d57d5ab68e7b9285d38594b.png?w=350|203,182,195
-150|Quiet Stand|s:99029a23f465d0ac70062adb909841/6499029a23f465d0ac70062adb909841.png?w=350|212,209,200
-151|The Horror Of Truth|s:c69953ca09915b6a91ab8eedf06661/a0c69953ca09915b6a91ab8eedf06661.png?w=350|183,196,197
-152|Embers Behind The Mask|s:93dbecdf196e1711b312546469e947/0393dbecdf196e1711b312546469e947.png?w=350|196,194,190
-153|Breath It Out|s:667eb0834c04f5950bf4f194fdab5a/ce667eb0834c04f5950bf4f194fdab5a.png?w=350|199,190,201
-154|Neon Moonrise Reverie|s:6a26c65a2f830b2cfb871119a0ee8a/d46a26c65a2f830b2cfb871119a0ee8a.png?w=350|214,214,227
-155|When Shadows Speak Soft|s:88a95e944f6ec06f87f47e4ea19770/7a88a95e944f6ec06f87f47e4ea19770.png?w=350|181,183,192
-156|Digital Solitude|s:471e206fdce4b1f4dd5e7f3537291e/b7471e206fdce4b1f4dd5e7f3537291e.png?w=350|203,183,208
-157|Cosmic Becoming|s:4420c47288f41ac0b78cb7e81a2718/414420c47288f41ac0b78cb7e81a2718.png?w=350|183,195,201
-158|The Weight Of Dissolving Identity|s:5b45e78a1f0cd8a22360789d8a5caa/bb5b45e78a1f0cd8a22360789d8a5caa.png?w=350|191,205,223
-159|Ultraviolet Muse|s:e698487b445f5626a311dde6d37c56/c1e698487b445f5626a311dde6d37c56.png?w=350|192,201,228
-160|Blooming In The Quiet|s:ec71bd11e68e896399e13a48df79e8/74ec71bd11e68e896399e13a48df79e8.png?w=350|193,196,228
-161|Where The Mind Outgrows The Body|s:93af5cef6f8e9bf509e1b8ad3c2b1e/8e93af5cef6f8e9bf509e1b8ad3c2b1e.png?w=350|196,210,220
-162|Electric Vigil|s:f5e2246237033de8efd47999abe649/edf5e2246237033de8efd47999abe649.png?w=350|174,174,209
-163|What Fire Leaves Behind|s:aeb2fc4d0f63cca48f099b02648a54/eaaeb2fc4d0f63cca48f099b02648a54.jpeg?w=350|196,192,200
-164|Wires Of Solitude|s:d4a93502bfc303a64151c499353014/59d4a93502bfc303a64151c499353014.jpeg?w=350|200,190,208
-165|Ecliptic|s:52c56c29bbd188a5c77bef96987106/ea52c56c29bbd188a5c77bef96987106.png?w=350|184,190,207
-166|Between Seeing And Knowing|s:15ef71333fb52ce2f09b4d1856d955/a915ef71333fb52ce2f09b4d1856d955.png?w=350|200,201,188
-167|Eternal Embers Of Silence|s:630cb1dd4f8ccd4dd2107b12aaec83/82630cb1dd4f8ccd4dd2107b12aaec83.png?w=350|182,180,179
-168|Silent Molt|s:ec1668021a0bd9f99999b0fb265d9b/c7ec1668021a0bd9f99999b0fb265d9b.jpeg?w=350|232,191,187
-169|Fragmented Continuum|s:6250b9b671e212cc74fdad79be3d7c/b36250b9b671e212cc74fdad79be3d7c.png?w=350|179,183,195
-170|The Threshold|s:8794a912406fff486eadf72e165b6e/728794a912406fff486eadf72e165b6e.png?w=350|186,173,186
-171|Under Pressure|s:d9598e2de8df375b601c3a419d7898/83d9598e2de8df375b601c3a419d7898.png?w=350|197,195,193
-173|The Price Of Vision|s:4791f834bae6c79ad65944b2f131ac/724791f834bae6c79ad65944b2f131ac.png?w=350|191,191,195
-174|Finde The Light|s:a2cf83c18ed28a8957f91bee197ac7/84a2cf83c18ed28a8957f91bee197ac7.png?w=350|179,182,188
-175|Born Of Soil And Thought|s:dfa88462f11ac537783e14cfd5d919/dedfa88462f11ac537783e14cfd5d919.png?w=350|204,201,208
-176|Oracle Of The Deep|s:444dc50a88917d14541a08033e8c72/97444dc50a88917d14541a08033e8c72.png?w=350|181,179,175
-177|Beyond Today|s:e2ed6311304c8850eb70b91ca1dd2d/eae2ed6311304c8850eb70b91ca1dd2d.png?w=350|184,200,209
-178|Shared Silence|s:f649c3634c0ed0b3124f6663c19884/c1f649c3634c0ed0b3124f6663c19884.png?w=350|206,206,227
-179|Unfolding Self|s:64b18513caad1c59930de671a62229/0464b18513caad1c59930de671a62229.png?w=350|189,189,187
-180|Where Identity Bleeds|s:df7c934b2e2a19a569e044236f0928/dcdf7c934b2e2a19a569e044236f0928.png?w=350|183,197,209
-181|Silent Mind Echoes|s:8f88d230f2fe33e57e32660f9f4a75/e18f88d230f2fe33e57e32660f9f4a75.png?w=350|183,188,196
-183|When The Cosmos Looks Back|s:7be2edc2133c50808c9556ee8d3075/c37be2edc2133c50808c9556ee8d3075.png?w=350|187,175,181
-184|Liquid Echoes Of Self|s:aca4db3581ee47fef30f20691a4e5b/5baca4db3581ee47fef30f20691a4e5b.png?w=350|207,189,214
-185|Open Wait|s:e7e2c8d76d7aaccf738fff7572a102/87e7e2c8d76d7aaccf738fff7572a102.png?w=350|209,204,209
-186|Defiance Of The Gaze|s:66e2b32bcff5ddd630d420762ad8b4/6d66e2b32bcff5ddd630d420762ad8b4.png?w=350|193,193,211
-187|Rooted In Absence|s:bd933647376324fd987ee1735cd751/24bd933647376324fd987ee1735cd751.png?w=350|178,192,210
-188|Devotion|s:4110c70a9306e88bc3f8a9367095f6/be4110c70a9306e88bc3f8a9367095f6.png?w=350|198,187,191
-191|Waves Of Identity|s:423531bc14e66a204f4ac6e1ca3291/00423531bc14e66a204f4ac6e1ca3291.png?w=350|191,184,203
-192|Sweet Poison|s:d024d6789c96fc6488826b332292df/bad024d6789c96fc6488826b332292df.png?w=350|212,206,200
-193|Shadows Under Skin|s:6780f189a7e13b470659f298af5922/716780f189a7e13b470659f298af5922.png?w=350|207,191,176
-194|Catching Tomorrow|s:e539ee1db8c18cecbd5b39a12fd426/4ae539ee1db8c18cecbd5b39a12fd426.png?w=350|189,187,218
-195|Blind Devotion|s:4c3e47be27d72d0be64d7aefcf44d0/384c3e47be27d72d0be64d7aefcf44d0.png?w=350|213,210,205
-196|River Of Thought|s:0fba76f1087a26c883b41f41c942a4/450fba76f1087a26c883b41f41c942a4.png?w=350|179,190,211
-197|Eclipsed Neon Deity|s:0b3af0312bc022ffddd83d443b30ba/fc0b3af0312bc022ffddd83d443b30ba.png?w=350|185,192,220
-198|City Of Silent Souls|s:2c49c361c61b5bff1be312d950a9db/e72c49c361c61b5bff1be312d950a9db.png?w=350|187,196,198
-199|Just Enough Light|s:b7c705806195c62b3743753f2f68b2/adb7c705806195c62b3743753f2f68b2.png?w=350|179,179,179
-200|Electric Fury|s:11d05becbde24db053c0b2a8a16baf/5211d05becbde24db053c0b2a8a16baf.png?w=350|174,178,200
-202|Neon Ascension|s:6e490baa2e1a9d8e21ab8a256692c3/b76e490baa2e1a9d8e21ab8a256692c3.jpeg?w=350|203,200,208
-203|Shepherd Of The Hidden Grove|s:70ff2c8f704d737ed331311689eeaf/5770ff2c8f704d737ed331311689eeaf.png?w=350|200,193,181
-204|Verdant Eclipse|s:f3e59c3fd834cd4386f974356dda1c/e2f3e59c3fd834cd4386f974356dda1c.png?w=350|178,181,206
-205|Abyss Of Witnesses|s:2ec38cb888d997b165fdf968b4c19a/5b2ec38cb888d997b165fdf968b4c19a.png?w=350|195,193,193
-206|Sylvan Mindscape|s:27769f42841aea7c35516de45b8408/1327769f42841aea7c35516de45b8408.png?w=350|198,213,221
-207|Neon Remnants|s:49f692ef9cb38b3f00d8b0d91622b4/5c49f692ef9cb38b3f00d8b0d91622b4.png?w=350|179,179,203
-208|Moonflower Silence|s:6547c1fceae50cc03274846686b81b/676547c1fceae50cc03274846686b81b.png?w=350|195,185,185
-209|Silent Dusk|s:d458e472d217f89fa762fb2673345f/b1d458e472d217f89fa762fb2673345f.png?w=350|180,183,213
-210|Edge of Becoming|s:aa648d38e1e48a78ae5136eae6e045/53aa648d38e1e48a78ae5136eae6e045.png?w=350|202,195,195
-211|Restless Mind|s:0d8941090b9b44698d6e999ebbab43/790d8941090b9b44698d6e999ebbab43.png?w=350|179,191,217
-212|Don't Think|s:701a3c245dd1f2fb8b145c75402ba6/a1701a3c245dd1f2fb8b145c75402ba6.png?w=350|196,196,196
-213|The Green Dawn|s:556e79ae671101a3fe003d1989f05b/0c556e79ae671101a3fe003d1989f05b.png?w=350|190,196,176
-214|Electric Quietude|s:48c3cc624766d2332b74ced1340efc/ec48c3cc624766d2332b74ced1340efc.png?w=350|195,198,217
-216|Halo Of Decay|s:fa2bcefd3d3c278625872016246846/84fa2bcefd3d3c278625872016246846.png?w=350|188,181,196
-217|Velvet Abyss|s:b79592005e546eca4aba447f96ba9f/5bb79592005e546eca4aba447f96ba9f.png?w=350|196,194,217
-218|Ember's Whisper|s:7b57de307c149d39555468283148bf/ed7b57de307c149d39555468283148bf.png?w=350|219,173,173
-219|Chromatic Reverie|s:113cfac731962fce54143fff13ae0a/cb113cfac731962fce54143fff13ae0a.jpeg?w=350|181,184,210
-220|Faceless Horizon|s:fd1f60f60eb373f6fbf35a1ae9cc7d/26fd1f60f60eb373f6fbf35a1ae9cc7d.png?w=350|188,192,192
-221|What Just Happened?|s:3f06db8200f8d0c5d20f37e01bbfa4/953f06db8200f8d0c5d20f37e01bbfa4.jpeg?w=350|186,174,175
-222|Take Me In|s:749f7ab4250809a1f3f75f931bc5b6/bd749f7ab4250809a1f3f75f931bc5b6.jpeg?w=350|179,181,239
-223|We Can Feel It|s:a1aadca3e3ad3b5586dfc1b74953af/4ba1aadca3e3ad3b5586dfc1b74953af.png?w=350|186,193,213
-224|Beneath The Burning Sky|s:11373af803fa2c055f7d5c33de6b03/6411373af803fa2c055f7d5c33de6b03.png?w=350|185,187,190
-225|Secrets Behind|s:4132b036cb300126a7d3117a591835/0f4132b036cb300126a7d3117a591835.jpeg?w=350|197,181,180
-226|Anonymous Hope|s:a69c82d4ae4297ae7c1f584a011b2e/bfa69c82d4ae4297ae7c1f584a011b2e.png?w=350|174,176,238
-227|Between Peace And Chaos|s:466d62439efca9d66e16a80b855cce/46466d62439efca9d66e16a80b855cce.png?w=350|203,181,214
-228|Duality In Silence|s:d9b6d4122ded003d2b4153242edc30/92d9b6d4122ded003d2b4153242edc30.png?w=350|188,175,183
-229|Burden Of The Skies|s:11127febf99103719bc6ba08dcb04f/be11127febf99103719bc6ba08dcb04f.png?w=350|204,198,195
-230|Out Of The Box|s:227f97b4f6d98914b84823077d3fc3/7c227f97b4f6d98914b84823077d3fc3.png?w=350|189,189,189
-231|309 Feathers Of Oblivion|s:2f3b9ac09722dd096bfd4786a9c28b/f02f3b9ac09722dd096bfd4786a9c28b.jpeg?w=350|192,177,208
-232|The Garden's Muse|s:db899ca47226030850a6187599932d/29db899ca47226030850a6187599932d.png?w=350|209,201,203
-233|The Fallen Kingdom|s:5ec3dc0589d048530b531f17e1a539/065ec3dc0589d048530b531f17e1a539.png?w=350|187,196,210
-234|Fantasy Drive|s:69881044a862c48e18295d56687215/0669881044a862c48e18295d56687215.png?w=350|187,182,202
-235|Divided Mind|s:39eed890a006b9a9a13c90f4228f0f/f439eed890a006b9a9a13c90f4228f0f.png?w=350|193,192,188
-236|The Last Moment|s:a8311a0231f3a46c826accf188d306/c8a8311a0231f3a46c826accf188d306.jpeg?w=350|208,218,187
-237|Prison Of Quite Waters|s:9ebb37a8fc6919d510ec7ae3188485/669ebb37a8fc6919d510ec7ae3188485.jpeg?w=350|194,220,214
-238|Prism Soul|s:1ddfc9a66cdc910c83e7b95e76c5f7/211ddfc9a66cdc910c83e7b95e76c5f7.png?w=350|198,191,196
-239|The Crowd Inside|s:fa7ea41eeb38f487b372a9dd056dd5/22fa7ea41eeb38f487b372a9dd056dd5.png?w=350|206,190,195
-240|Unspoken Wings|s:7fedf3f2762440320f68156190ce22/557fedf3f2762440320f68156190ce22.png?w=350|205,201,214
-241|Fallout Of Yesterday|s:8f078306fe59098f3db576814b679f/f78f078306fe59098f3db576814b679f.png?w=350|213,190,209
-242|Mind Of Color|s:d5cb229710318f458a051c603de44f/0cd5cb229710318f458a051c603de44f.png?w=350|209,205,211
-243|Silent Reflection|s:4adf1b557c9362c36cb755b1726274/d74adf1b557c9362c36cb755b1726274.png?w=350|197,196,216
-244|Wreck Of Our Tomorrow|s:b5a007940d0e6a43c3e43235ebdd31/23b5a007940d0e6a43c3e43235ebdd31.png?w=350|194,198,199
-245|Corporate Dreams|s:a35f6f8bd0cc7a3ac37768e44731d9/bea35f6f8bd0cc7a3ac37768e44731d9.png?w=350|219,208,193
-246|Shape Of The Unspoken|s:2a26525ed1c79c42741ac2cda51250/352a26525ed1c79c42741ac2cda51250.png?w=350|181,182,196
-247|Between Reality And Imagination|s:96742cc891bc635f7338b34af32a3b/2c96742cc891bc635f7338b34af32a3b.png?w=350|203,189,213
-248|Two Selves|s:05fc218abf88eb28ffbe8dabf57cad/ed05fc218abf88eb28ffbe8dabf57cad.png?w=350|189,188,190
-249|Raised Between Legends|s:b6ce115bc52cd22419c0e1051ece0d/9db6ce115bc52cd22419c0e1051ece0d.png?w=350|179,186,192
-250|Synthetic Light|s:a12855ce26bd2e12dd22c99e16ce4e/1aa12855ce26bd2e12dd22c99e16ce4e.png?w=350|175,186,207
-251|Voice Of The Shadow|s:8cf118985a4010d314418bcdfbd10c/d98cf118985a4010d314418bcdfbd10c.png?w=350|188,190,202
-252|Last Witness|s:ad067358fd108781deb5798f660c67/c9ad067358fd108781deb5798f660c67.jpeg?w=350|185,181,181
-253|Fire Of Creation|s:04eca797638e313649519636b6d9b7/2904eca797638e313649519636b6d9b7.png?w=350|190,186,211
-254|Rising Thought|s:96c49b9ed3295e2c67df6521a73825/7396c49b9ed3295e2c67df6521a73825.png?w=350|203,203,203
-255|The Astral Connoisseur|s:bfdc8a8434e9ad6635a0fdd630b612/0abfdc8a8434e9ad6635a0fdd630b612.png?w=350|186,183,188
-256|Silence In Command|s:e98fabd89923bd24377bed5227913f/30e98fabd89923bd24377bed5227913f.png?w=350|208,184,186
-257|Rebellion Behind The Mask|s:2ef27671a23b9d710caf5f279e2b1f/d52ef27671a23b9d710caf5f279e2b1f.png?w=350|192,189,184`;
+1|Staredown|/assets/gallery/og/og1.jpg|196,193,207
+2|Beam me up|/assets/gallery/og/og2.jpg|202,191,198
+3|Breakdown|/assets/gallery/og/og3.jpg|209,205,201
+4|Bubble eye|/assets/gallery/og/og4.jpg|216,193,202
+5|Can't change the roots|/assets/gallery/og/og5.jpg|222,214,179
+6|Controlled insanity|/assets/gallery/og/og6.jpg|192,208,220
+7|Another perspective|/assets/gallery/og/og7.png|196,195,207
+8|Going for a long walk|/assets/gallery/og/og8.jpg|202,195,215
+9|Dark meadow|/assets/gallery/og/og9.jpg|200,183,182
+10|Eye in the sky|/assets/gallery/og/og10.jpg|188,194,211
+11|Black kitty|/assets/gallery/og/og11.jpg|203,176,187
+12|Hungry Virus|/assets/gallery/og/og12.jpg|208,186,204
+13|Crop hustle|/assets/gallery/og/og13.jpg|194,197,193
+14|Cloudy knowledge|/assets/gallery/og/og14.jpg|190,206,217
+15|Utopia|/assets/gallery/og/og15.jpg|218,202,208
+16|Welfare|/assets/gallery/og/og16.jpg|213,198,221
+17|Beyond the screen|/assets/gallery/og/og17.jpg|180,179,213
+18|Pastelized|/assets/gallery/og/og18.jpg|198,209,215
+19|Existence|/assets/gallery/og/og19.jpg|189,207,223
+20|Mind explosion|/assets/gallery/og/og20.jpg|212,221,219
+21|Apologize|/assets/gallery/og/og21.jpg|220,216,227
+22|Stranger kites|/assets/gallery/og/og22.jpg|189,192,215
+23|Peace|/assets/gallery/og/og23.jpg|195,189,207
+24|Zoom|/assets/gallery/og/og24.jpg|225,208,200
+25|Paranoia|/assets/gallery/og/og25.jpg|197,213,237
+26|Sky is the limit|/assets/gallery/og/og26.jpg|190,205,217
+27|What?|/assets/gallery/og/og27.jpg|191,191,224
+28|Way Home|/assets/gallery/og/og28.jpg|189,209,191
+29|Actions, not words|/assets/gallery/og/og29.png|215,214,198
+30|Suits|/assets/gallery/og/og30.jpg|206,203,212
+31|Next|/assets/gallery/og/og31.jpg|176,175,219
+32|Melting Pot|/assets/gallery/og/og32.jpg|221,214,203
+33|United|/assets/gallery/og/og33.jpg|198,199,193
+34|Shadow of mine|/assets/gallery/og/og34.jpg|196,203,213
+35|Beatle|/assets/gallery/og/og35.png|219,210,198
+36|Break my soul|/assets/gallery/og/og36.png|198,190,193
+37|Twoface|/assets/gallery/og/og37.jpg|198,191,207
+38|Toxic|/assets/gallery/og/og38.png|193,186,197
+39|Rosary|/assets/gallery/og/og39.png|231,198,193
+40|The Watchfull Cyclopean|/assets/gallery/og/og40.jpg|199,197,218
+41|Someday|/assets/gallery/og/og41.jpg|194,202,204
+42|Luminara|/assets/gallery/og/og42.png|199,187,220
+43|The other side|/assets/gallery/og/og43.jpg|190,186,208
+44|Red velvet|/assets/gallery/og/og44.jpg|195,193,206
+45|I Miss You|/assets/gallery/og/og45.jpg|206,194,184
+47|Toxic River|/assets/gallery/og/og47.png|174,192,226
+48|Holographic Kissed|/assets/gallery/og/og48.jpg|206,209,215
+49|Mindblowing|/assets/gallery/og/og49.png|188,176,213
+51|Garden Eden|/assets/gallery/og/og51.jpg|186,187,207
+52|The Leader|/assets/gallery/og/og52.jpg|186,189,193
+53|Solid|/assets/gallery/og/og53.png|195,180,186
+54|Skyline|/assets/gallery/og/og54.jpg|191,185,209
+55|Bright Beauty|/assets/gallery/og/og55.jpg|224,218,231
+56|Romeo|/assets/gallery/og/og56.jpg|200,182,195
+57|Professor|/assets/gallery/og/og57.png|199,204,209
+58|Why?|/assets/gallery/og/og58.jpg|179,195,212
+59|Bubble Fusion|/assets/gallery/og/og59.png|209,204,219
+60|Wonderland|/assets/gallery/og/og60.jpg|202,199,204
+61|Bonded|/assets/gallery/og/og61.jpg|187,197,199
+62|Life Goes On|/assets/gallery/og/og62.jpg|210,175,187
+63|Spit It Out|/assets/gallery/og/og63.png|190,186,211
+64|Destruction|/assets/gallery/og/og64.png|212,192,188
+65|No Plan B|/assets/gallery/og/og65.jpg|212,202,197
+66|Trapped In The Bubble|/assets/gallery/og/og66.png|203,203,218
+67|Saw The Fire|/assets/gallery/og/og67.png|202,189,204
+68|Wonderland|/assets/gallery/og/og68.jpg|202,199,204
+69|Headshot|/assets/gallery/og/og69.png|185,190,229
+70|Too Cool|/assets/gallery/og/og70.jpg|207,174,186
+71|Sense Of Belonging|/assets/gallery/og/og71.png|180,192,202
+72|Aquarell|/assets/gallery/og/og72.jpg|202,208,207
+73|Soulfire|/assets/gallery/og/og73.png|203,193,188
+74|Mystic Lake|/assets/gallery/og/og74.jpg|178,183,203
+75|Tired|/assets/gallery/og/og75.jpg|217,220,243
+76|Cyberphobia|/assets/gallery/og/og76.jpg|189,176,188
+77|See The Future|/assets/gallery/og/og77.jpg|199,195,194
+78|Sage|/assets/gallery/og/og78.jpg|199,187,209
+79|Cyberpink|/assets/gallery/og/og79.jpg|210,203,226
+80|Forgotten|/assets/gallery/og/og80.png|185,194,207
+81|Dragon Soul|/assets/gallery/og/og81.png|212,185,188
+82|Fractional|/assets/gallery/og/og82.jpg|187,188,188
+83|Man In The Mirror|/assets/gallery/og/og83.jpg|187,194,197
+84|Passion|/assets/gallery/og/og84.jpg|203,179,186
+85|Pose|/assets/gallery/og/og85.jpg|186,195,194
+86|Overthinker|/assets/gallery/og/og86.png|200,197,211
+87|Every Drop Of Me|/assets/gallery/og/og87.jpg|199,200,208
+88|Iris Hill|/assets/gallery/og/og88.jpg|184,192,209
+89|Belife|/assets/gallery/og/og89.jpg|214,195,214
+90|The Waiter|/assets/gallery/og/og90.jpg|192,207,203
+91|Spotlight|/assets/gallery/og/og91.png|189,186,219
+92|Nothing Matters|/assets/gallery/og/og92.jpg|203,185,187
+93|Control|/assets/gallery/og/og93.png|185,182,227
+95|Aristocracy|/assets/gallery/og/og95.jpg|190,195,211
+96|Here For You|/assets/gallery/og/og96.jpg|178,182,180
+97|Couple Chaos|/assets/gallery/og/og97.png|189,189,199
+99|Addicted To You|/assets/gallery/og/og99.jpg|211,206,234
+100|Feel the Presence|/assets/gallery/og/og100.jpg|184,198,185
+101|Volatility|/assets/gallery/og/og101.png|199,188,198
+102|Fluffy Mission|/assets/gallery/og/og102.jpg|193,193,199
+103|Soultaker|/assets/gallery/og/og103.png|193,179,221
+104|Blue Horizon|/assets/gallery/og/og104.jpg|183,197,224
+105|Love And Death|/assets/gallery/og/og105.png|200,187,189
+106|Overthinked|/assets/gallery/og/og106.jpg|177,186,195
+107|Endless Stare|/assets/gallery/og/og107.jpg|194,183,210
+108|Flower Power|/assets/gallery/og/og108.jpg|218,210,207
+109|Soullake|/assets/gallery/og/og109.jpg|203,194,219
+110|Something Behind|/assets/gallery/og/og110.png|187,193,212
+111|The Rise|/assets/gallery/og/og111.png|179,186,210
+112|Bloody Sky|/assets/gallery/og/og112.jpg|194,190,192
+113|Innocent Love|/assets/gallery/og/og113.jpg|193,178,200
+114|Who Am I|/assets/gallery/og/og114.png|187,191,219
+115|Dazzle|/assets/gallery/og/og115.jpg|207,205,205
+116|Belle|/assets/gallery/og/og116.png|191,200,230
+117|Split|/assets/gallery/og/og117.png|195,192,220
+118|Not Interested|/assets/gallery/og/og118.jpg|196,186,204
+119|Drawn Together|/assets/gallery/og/og119.png|201,199,218
+120|Fake Love|/assets/gallery/og/og120.png|186,190,200
+121|Inspiration|/assets/gallery/og/og121.jpg|200,189,203
+122|Stepped Away|/assets/gallery/og/og122.jpg|183,189,222
+123|Bacillus|/assets/gallery/og/og123.png|197,195,209
+124|Edge Of Time|/assets/gallery/og/og124.jpg|189,187,208
+125|Iridescent|/assets/gallery/og/og125.png|200,199,204
+126|Mind Orbit|/assets/gallery/og/og126.png|200,188,214
+127|Fluorescat|/assets/gallery/og/og127.png|186,187,184
+128|Overprotection|/assets/gallery/og/og128.png|202,206,227
+129|Highly Connected|/assets/gallery/og/og129.png|189,186,222
+130|Empty Wideness|/assets/gallery/og/og130.jpg|184,187,197
+131|Bloody Taste|/assets/gallery/og/og131.png|205,201,208
+132|Beauty In Chaos|/assets/gallery/og/og132.jpg|180,184,200
+133|Reality Check|/assets/gallery/og/og133.jpg|181,195,198
+134|Angels In My Mind|/assets/gallery/og/og134.png|181,179,213
+135|Floral Fantasy|/assets/gallery/og/og135.jpg|196,192,195
+136|Rising Star|/assets/gallery/og/og136.png|204,195,200
+137|Think About Robin|/assets/gallery/og/og137.jpg|213,208,178
+138|What Are You Hiding|/assets/gallery/og/og138.png|201,183,201
+139|Roots Of Imagination|/assets/gallery/og/og139.jpg|192,189,188
+140|Feel The Force|/assets/gallery/og/og140.png|192,180,223
+141|Plant Your Deeams|/assets/gallery/og/og141.jpg|219,205,211
+142|The Last Step|/assets/gallery/og/og142.jpg|183,193,204
+143|Fade Away|/assets/gallery/og/og143.png|197,197,211
+144|Involuntary Transformation|/assets/gallery/og/og144.png|208,187,215
+145|Rainbow Kissed|/assets/gallery/og/og145.png|207,205,221
+146|Cozy Cup|/assets/gallery/og/og146.jpg|198,199,209
+147|Little Touch Of Self-Awareness|/assets/gallery/og/og147.png|206,198,223
+149|Always Behind You|/assets/gallery/og/og149.png|203,182,195
+150|Quiet Stand|/assets/gallery/og/og150.png|212,209,200
+151|The Horror Of Truth|/assets/gallery/og/og151.png|183,196,197
+152|Embers Behind The Mask|/assets/gallery/og/og152.png|196,194,190
+153|Breath It Out|/assets/gallery/og/og153.png|199,190,201
+154|Neon Moonrise Reverie|/assets/gallery/og/og154.png|214,214,227
+155|When Shadows Speak Soft|/assets/gallery/og/og155.png|181,183,192
+156|Digital Solitude|/assets/gallery/og/og156.png|203,183,208
+157|Cosmic Becoming|/assets/gallery/og/og157.png|183,195,201
+158|The Weight Of Dissolving Identity|/assets/gallery/og/og158.png|191,205,223
+159|Ultraviolet Muse|/assets/gallery/og/og159.png|192,201,228
+160|Blooming In The Quiet|/assets/gallery/og/og160.png|193,196,228
+161|Where The Mind Outgrows The Body|/assets/gallery/og/og161.png|196,210,220
+162|Electric Vigil|/assets/gallery/og/og162.png|174,174,209
+163|What Fire Leaves Behind|/assets/gallery/og/og163.jpg|196,192,200
+164|Wires Of Solitude|/assets/gallery/og/og164.jpg|200,190,208
+165|Ecliptic|/assets/gallery/og/og165.png|184,190,207
+166|Between Seeing And Knowing|/assets/gallery/og/og166.png|200,201,188
+167|Eternal Embers Of Silence|/assets/gallery/og/og167.png|182,180,179
+168|Silent Molt|/assets/gallery/og/og168.jpg|232,191,187
+169|Fragmented Continuum|/assets/gallery/og/og169.png|179,183,195
+170|The Threshold|/assets/gallery/og/og170.png|186,173,186
+171|Under Pressure|/assets/gallery/og/og171.png|197,195,193
+173|The Price Of Vision|/assets/gallery/og/og173.png|191,191,195
+174|Finde The Light|/assets/gallery/og/og174.png|179,182,188
+175|Born Of Soil And Thought|/assets/gallery/og/og175.png|204,201,208
+176|Oracle Of The Deep|/assets/gallery/og/og176.png|181,179,175
+177|Beyond Today|/assets/gallery/og/og177.png|184,200,209
+178|Shared Silence|/assets/gallery/og/og178.png|206,206,227
+179|Unfolding Self|/assets/gallery/og/og179.png|189,189,187
+180|Where Identity Bleeds|/assets/gallery/og/og180.png|183,197,209
+181|Silent Mind Echoes|/assets/gallery/og/og181.png|183,188,196
+183|When The Cosmos Looks Back|/assets/gallery/og/og183.png|187,175,181
+184|Liquid Echoes Of Self|/assets/gallery/og/og184.png|207,189,214
+185|Open Wait|/assets/gallery/og/og185.png|209,204,209
+186|Defiance Of The Gaze|/assets/gallery/og/og186.png|193,193,211
+187|Rooted In Absence|/assets/gallery/og/og187.png|178,192,210
+188|Devotion|/assets/gallery/og/og188.png|198,187,191
+191|Waves Of Identity|/assets/gallery/og/og191.png|191,184,203
+192|Sweet Poison|/assets/gallery/og/og192.png|212,206,200
+193|Shadows Under Skin|/assets/gallery/og/og193.png|207,191,176
+194|Catching Tomorrow|/assets/gallery/og/og194.png|189,187,218
+195|Blind Devotion|/assets/gallery/og/og195.png|213,210,205
+196|River Of Thought|/assets/gallery/og/og196.png|179,190,211
+197|Eclipsed Neon Deity|/assets/gallery/og/og197.png|185,192,220
+198|City Of Silent Souls|/assets/gallery/og/og198.png|187,196,198
+199|Just Enough Light|/assets/gallery/og/og199.png|179,179,179
+200|Electric Fury|/assets/gallery/og/og200.png|174,178,200
+202|Neon Ascension|/assets/gallery/og/og202.jpg|203,200,208
+203|Shepherd Of The Hidden Grove|/assets/gallery/og/og203.png|200,193,181
+204|Verdant Eclipse|/assets/gallery/og/og204.png|178,181,206
+205|Abyss Of Witnesses|/assets/gallery/og/og205.png|195,193,193
+206|Sylvan Mindscape|/assets/gallery/og/og206.png|198,213,221
+207|Neon Remnants|/assets/gallery/og/og207.png|179,179,203
+208|Moonflower Silence|/assets/gallery/og/og208.png|195,185,185
+209|Silent Dusk|/assets/gallery/og/og209.png|180,183,213
+210|Edge of Becoming|/assets/gallery/og/og210.png|202,195,195
+211|Restless Mind|/assets/gallery/og/og211.png|179,191,217
+212|Don't Think|/assets/gallery/og/og212.png|196,196,196
+213|The Green Dawn|/assets/gallery/og/og213.png|190,196,176
+214|Electric Quietude|/assets/gallery/og/og214.png|195,198,217
+216|Halo Of Decay|/assets/gallery/og/og216.png|188,181,196
+217|Velvet Abyss|/assets/gallery/og/og217.png|196,194,217
+218|Ember's Whisper|/assets/gallery/og/og218.png|219,173,173
+219|Chromatic Reverie|/assets/gallery/og/og219.jpg|181,184,210
+220|Faceless Horizon|/assets/gallery/og/og220.png|188,192,192
+221|What Just Happened?|/assets/gallery/og/og221.jpg|186,174,175
+222|Take Me In|/assets/gallery/og/og222.jpg|179,181,239
+223|We Can Feel It|/assets/gallery/og/og223.png|186,193,213
+224|Beneath The Burning Sky|/assets/gallery/og/og224.png|185,187,190
+225|Secrets Behind|/assets/gallery/og/og225.jpg|197,181,180
+226|Anonymous Hope|/assets/gallery/og/og226.png|174,176,238
+227|Between Peace And Chaos|/assets/gallery/og/og227.png|203,181,214
+228|Duality In Silence|/assets/gallery/og/og228.png|188,175,183
+229|Burden Of The Skies|/assets/gallery/og/og229.png|204,198,195
+230|Out Of The Box|/assets/gallery/og/og230.png|189,189,189
+231|309 Feathers Of Oblivion|/assets/gallery/og/og231.jpg|192,177,208
+232|The Garden's Muse|/assets/gallery/og/og232.png|209,201,203
+233|The Fallen Kingdom|/assets/gallery/og/og233.png|187,196,210
+234|Fantasy Drive|/assets/gallery/og/og234.png|187,182,202
+235|Divided Mind|/assets/gallery/og/og235.png|193,192,188
+236|The Last Moment|/assets/gallery/og/og236.jpg|208,218,187
+237|Prison Of Quite Waters|/assets/gallery/og/og237.jpg|194,220,214
+238|Prism Soul|/assets/gallery/og/og238.png|198,191,196
+239|The Crowd Inside|/assets/gallery/og/og239.png|206,190,195
+240|Unspoken Wings|/assets/gallery/og/og240.png|205,201,214
+241|Fallout Of Yesterday|/assets/gallery/og/og241.png|213,190,209
+242|Mind Of Color|/assets/gallery/og/og242.png|209,205,211
+243|Silent Reflection|/assets/gallery/og/og243.png|197,196,216
+244|Wreck Of Our Tomorrow|/assets/gallery/og/og244.png|194,198,199
+245|Corporate Dreams|/assets/gallery/og/og245.png|219,208,193
+246|Shape Of The Unspoken|/assets/gallery/og/og246.png|181,182,196
+247|Between Reality And Imagination|/assets/gallery/og/og247.png|203,189,213
+248|Two Selves|/assets/gallery/og/og248.png|189,188,190
+249|Raised Between Legends|/assets/gallery/og/og249.png|179,186,192
+250|Synthetic Light|/assets/gallery/og/og250.png|175,186,207
+251|Voice Of The Shadow|/assets/gallery/og/og251.png|188,190,202
+252|Last Witness|/assets/gallery/og/og252.jpg|185,181,181
+253|Fire Of Creation|/assets/gallery/og/og253.png|190,186,211
+254|Rising Thought|/assets/gallery/og/og254.png|203,203,203
+255|The Astral Connoisseur|/assets/gallery/og/og255.png|186,183,188
+256|Silence In Command|/assets/gallery/og/og256.png|208,184,186
+257|Rebellion Behind The Mask|/assets/gallery/og/og257.png|192,189,184`;
   return C.trim().split('\n').map(line=>{
     const [id,name,img,bg]=line.split('|');
     let url=img;
-    if(img.startsWith('s:')) url=S+img.slice(2);
-    else if(img.startsWith('w:')) url=W+img.slice(2);
+    if(img.startsWith('w:')) url=W+img.slice(2);
     return {id: isNaN(id)?id:Number(id), name, img:url, bg:bg.split(',').map(Number)};
   });
 })();
