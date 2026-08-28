@@ -486,12 +486,13 @@
     adminBtn.addEventListener('mouseenter', function () { this.style.color = 'rgba(255,255,255,0.25)'; });
     adminBtn.addEventListener('mouseleave', function () { this.style.color = 'rgba(255,255,255,0.08)'; });
     adminBtn.addEventListener('click', showLoginModal);
-    // Mobile: triple-tap on the ITIA footer text to trigger
+    // Triple-tap (mobile) or triple-click (desktop) on footer text to trigger
     var tapCount = 0, tapTimer = null;
+    var resetMs = ('ontouchstart' in window) ? 600 : 1000;
     footer.addEventListener('click', function () {
       tapCount++;
       clearTimeout(tapTimer);
-      tapTimer = setTimeout(function () { tapCount = 0; }, 600);
+      tapTimer = setTimeout(function () { tapCount = 0; }, resetMs);
       if (tapCount >= 3) { tapCount = 0; showLoginModal(); }
     });
 
