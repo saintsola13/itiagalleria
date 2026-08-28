@@ -466,57 +466,38 @@
     var footer = document.getElementById('splash-footer');
     if (!footer) return;
 
-    var isMobile = ('ontouchstart' in window);
     var adminBtn = document.createElement('button');
     adminBtn.id = 'admin-trigger';
-    adminBtn.textContent = isMobile ? '·' : 'ADMIN';
+    adminBtn.textContent = 'ADMIN';
     adminBtn.title = '';
-    if (isMobile) {
-      adminBtn.style.cssText = [
-        'position:absolute',
-        'bottom:1.5rem',
-        'left:1.5rem',
-        'background:transparent',
-        'border:none',
-        'color:rgba(255,255,255,0.08)',
-        'font-size:22px',
-        'cursor:pointer',
-        'line-height:1',
-        'padding:4px 8px',
-        'transition:color 0.3s'
-      ].join(';');
-      adminBtn.addEventListener('mouseenter', function () { this.style.color = 'rgba(255,255,255,0.25)'; });
-      adminBtn.addEventListener('mouseleave', function () { this.style.color = 'rgba(255,255,255,0.08)'; });
-    } else {
-      adminBtn.style.cssText = [
-        'position:absolute',
-        'bottom:1.5rem',
-        'left:1.5rem',
-        'background:rgba(255,255,255,0.08)',
-        'backdrop-filter:blur(8px)',
-        '-webkit-backdrop-filter:blur(8px)',
-        'border:1px solid rgba(255,255,255,0.18)',
-        'color:rgba(255,255,255,0.6)',
-        'font-family:Georgia,serif',
-        'font-size:10px',
-        'letter-spacing:0.2rem',
-        'cursor:pointer',
-        'padding:7px 18px',
-        'border-radius:3px',
-        'text-transform:uppercase',
-        'transition:all 0.2s'
-      ].join(';');
-      adminBtn.addEventListener('mouseenter', function () {
-        this.style.background = 'rgba(255,255,255,0.15)';
-        this.style.color = '#fff';
-        this.style.borderColor = 'rgba(255,255,255,0.4)';
-      });
-      adminBtn.addEventListener('mouseleave', function () {
-        this.style.background = 'rgba(255,255,255,0.08)';
-        this.style.color = 'rgba(255,255,255,0.6)';
-        this.style.borderColor = 'rgba(255,255,255,0.18)';
-      });
-    }
+    adminBtn.style.cssText = [
+      'position:absolute',
+      'bottom:1.5rem',
+      'left:1.5rem',
+      'background:rgba(255,255,255,0.08)',
+      'backdrop-filter:blur(8px)',
+      '-webkit-backdrop-filter:blur(8px)',
+      'border:1px solid rgba(255,255,255,0.18)',
+      'color:rgba(255,255,255,0.6)',
+      'font-family:Georgia,serif',
+      'font-size:10px',
+      'letter-spacing:0.2rem',
+      'cursor:pointer',
+      'padding:7px 18px',
+      'border-radius:3px',
+      'text-transform:uppercase',
+      'transition:all 0.2s'
+    ].join(';');
+    adminBtn.addEventListener('mouseenter', function () {
+      this.style.background = 'rgba(255,255,255,0.15)';
+      this.style.color = '#fff';
+      this.style.borderColor = 'rgba(255,255,255,0.4)';
+    });
+    adminBtn.addEventListener('mouseleave', function () {
+      this.style.background = 'rgba(255,255,255,0.08)';
+      this.style.color = 'rgba(255,255,255,0.6)';
+      this.style.borderColor = 'rgba(255,255,255,0.18)';
+    });
     adminBtn.addEventListener('click', showLoginModal);
     // Triple-tap (mobile) or triple-click (desktop) on footer text to trigger
     var tapCount = 0, tapTimer = null;
