@@ -404,7 +404,7 @@
 
   // ── Login modal ──────────────────────────────────────────
 
-  function showLoginModal() {
+  window.showLoginModal = function showLoginModal() {
     if (isLoggedIn()) { showAdminPanel(); return; }
 
     var modal = document.createElement('div');
