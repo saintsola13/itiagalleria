@@ -5,7 +5,7 @@
 (function () {
   'use strict';
 
-  var API = 'https://api.itiagalleria.xyz';
+  var API = 'https://itiagalleria.xyz/api';
 
   // Simple hash — not cryptographic, but keeps PW out of plain sight
   function hashStr(s) {
