@@ -62,12 +62,13 @@
     var customs  = loadCustomNfts();
     var overrides = loadNameOverrides();
 
-    // Append custom pieces
-    customs.forEach(function (c) {
+    // Prepend custom pieces so they appear at the top on every load
+    for (var ci = customs.length - 1; ci >= 0; ci--) {
+      var c = customs[ci];
       if (!NFTS.find(function (n) { return String(n.id) === String(c.id); })) {
-        NFTS.push(c);
+        NFTS.unshift(c);
       }
-    });
+    }
 
     // Apply name overrides
     NFTS.forEach(function (n) {
