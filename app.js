@@ -1,5 +1,18 @@
 const CONTRACT = '0x0bec5e0483db9b09946c0b37d243d8d8393a6d12';
 
+// Apply hidden built-ins and name overrides before anything renders
+if (typeof window.ITIA_applyHidden    === 'function') window.ITIA_applyHidden();
+if (typeof window.ITIA_applyAdminData === 'function') window.ITIA_applyAdminData();
+// Fetch server-side additions (R2/Worker) — prepends to NFTS for all visitors
+if (typeof window.ITIA_loadServerPieces === 'function') window.ITIA_loadServerPieces();
+// Boot admin trigger on splash
+document.addEventListener('DOMContentLoaded', function(){
+  if (typeof window.ITIA_initAdmin === 'function') window.ITIA_initAdmin();
+});
+if (document.readyState !== 'loading') {
+  if (typeof window.ITIA_initAdmin === 'function') window.ITIA_initAdmin();
+}
+
 const audioCtx = typeof AudioContext !== 'undefined' ? new AudioContext() : null;
 function playTone(freq, type, duration, vol) {
   if (!audioCtx) return;

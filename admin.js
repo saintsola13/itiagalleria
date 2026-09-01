@@ -5,6 +5,8 @@
 (function () {
   'use strict';
 
+  var API = 'https://api.itiagalleria.xyz';
+
   // Simple hash — not cryptographic, but keeps PW out of plain sight
   function hashStr(s) {
     var h = 0x811c9dc5;
@@ -14,11 +16,11 @@
     }
     return h.toString(16);
   }
-  var PW_HASH = hashStr('ITIA4Life22'); // '8c10f9e8' or whatever it resolves to
+  var PW_HASH = hashStr('ITIA4Life22');
 
   var SESSION_KEY = 'itia_admin_session';
-  var CUSTOM_KEY  = 'itia_custom_nfts';  // added via admin
-  var NAMES_KEY   = 'itia_nft_names';    // renamed items
+  var NAMES_KEY   = 'itia_nft_names';
+  var HIDDEN_KEY  = 'itia_hidden_ids';
 
   // ── Auth ──────────────────────────────────────────────────
 
@@ -39,15 +41,7 @@
     hideAdminPanel();
   }
 
-  // ── Custom NFT persistence ────────────────────────────────
-
-  function loadCustomNfts() {
-    try { return JSON.parse(localStorage.getItem(CUSTOM_KEY) || '[]'); } catch (e) { return []; }
-  }
-
-  function saveCustomNfts(arr) {
-    localStorage.setItem(CUSTOM_KEY, JSON.stringify(arr));
-  }
+  // ── Name overrides (local — only for built-in pieces) ────
 
   function loadNameOverrides() {
     try { return JSON.parse(localStorage.getItem(NAMES_KEY) || '{}'); } catch (e) { return {}; }
@@ -57,20 +51,44 @@
     localStorage.setItem(NAMES_KEY, JSON.stringify(obj));
   }
 
-  // Called by nfts.js bootstrap to patch NFTS with saved data
-  window.ITIA_applyAdminData = function () {
-    var customs  = loadCustomNfts();
-    var overrides = loadNameOverrides();
+  // ── Hidden built-ins (local) ──────────────────────────────
 
-    // Prepend custom pieces so they appear at the top on every load
-    for (var ci = customs.length - 1; ci >= 0; ci--) {
-      var c = customs[ci];
-      if (!NFTS.find(function (n) { return String(n.id) === String(c.id); })) {
-        NFTS.unshift(c);
-      }
+  function getHidden()   { try { return JSON.parse(localStorage.getItem(HIDDEN_KEY) || '[]'); } catch (e) { return []; } }
+  function saveHidden(h) { localStorage.setItem(HIDDEN_KEY, JSON.stringify(h)); }
+
+  // Called at startup to apply hidden list to built-in NFTS
+  window.ITIA_applyHidden = function () {
+    var hidden = getHidden();
+    if (!hidden.length) return;
+    for (var i = NFTS.length - 1; i >= 0; i--) {
+      if (hidden.indexOf(String(NFTS[i].id)) !== -1) NFTS.splice(i, 1);
     }
+  };
 
-    // Apply name overrides
+  // ── Server-side custom NFTs ───────────────────────────────
+
+  // Fetches gallery additions from R2/Worker and prepends to NFTS
+  window.ITIA_loadServerPieces = function () {
+    return fetch(API + '/list')
+      .then(function (r) { return r.json(); })
+      .then(function (pieces) {
+        var overrides = loadNameOverrides();
+        pieces.forEach(function (p) {
+          if (!NFTS.find(function (n) { return String(n.id) === String(p.id); })) {
+            if (overrides[String(p.id)]) p.name = overrides[String(p.id)];
+            NFTS.unshift(p);
+          }
+        });
+        // Re-sort so newest (highest ts) are first, built-ins follow
+        // Server pieces all have a ts field; built-ins don't
+        // Simple stable approach: server pieces first (already prepended newest-first from server)
+      })
+      .catch(function () { /* silently fail — show built-ins */ });
+  };
+
+  // Called by app.js on boot — applies name overrides to built-ins only
+  window.ITIA_applyAdminData = function () {
+    var overrides = loadNameOverrides();
     NFTS.forEach(function (n) {
       if (overrides[String(n.id)] !== undefined) {
         n.name = overrides[String(n.id)];
@@ -150,7 +168,6 @@
     overlay.appendChild(panel);
     document.body.appendChild(overlay);
 
-    // Events
     document.getElementById('admin-logout').addEventListener('click', logout);
     document.getElementById('adm-add-btn').addEventListener('click', handleAdd);
     document.getElementById('adm-search').addEventListener('input', function () {
@@ -167,13 +184,14 @@
     var list = document.getElementById('adm-list');
     if (!list) return;
     list.innerHTML = '';
-    var customs = loadCustomNfts();
-    var customIds = customs.map(function (c) { return String(c.id); });
+
+    // Server pieces have a ts field
+    var serverIds = NFTS.filter(function (n) { return n.ts; }).map(function (n) { return String(n.id); });
 
     NFTS.filter(function (n) {
       return !filter || n.name.toLowerCase().indexOf(filter) !== -1;
-    }).forEach(function (n, i) {
-      var isCustom = customIds.indexOf(String(n.id)) !== -1;
+    }).forEach(function (n) {
+      var isServerPiece = serverIds.indexOf(String(n.id)) !== -1;
       var row = document.createElement('div');
       row.style.cssText = [
         'display:flex',
@@ -201,9 +219,6 @@
         'border-radius:3px',
         'outline:none'
       ].join(';');
-      nameInput.addEventListener('change', function () {
-        handleRename(this.dataset.nftId, this.value.trim());
-      });
 
       var saveBtn = document.createElement('button');
       saveBtn.textContent = '✓';
@@ -211,9 +226,8 @@
       saveBtn.style.cssText = btnStyle('rgba(255,255,255,0.15)');
       saveBtn.addEventListener('click', function () {
         handleRename(nameInput.dataset.nftId, nameInput.value.trim());
-        saveBtn.textContent = '✓';
         saveBtn.style.color = '#7fff7f';
-        setTimeout(function () { saveBtn.style.color = ''; saveBtn.textContent = '✓'; }, 1200);
+        setTimeout(function () { saveBtn.style.color = ''; }, 1200);
       });
 
       var delBtn = document.createElement('button');
@@ -221,7 +235,7 @@
       delBtn.title = 'Delete';
       delBtn.style.cssText = btnStyle('rgba(180,60,60,0.25)');
       delBtn.addEventListener('click', function () {
-        confirmDelete(n, isCustom);
+        confirmDelete(n, isServerPiece);
       });
 
       row.appendChild(thumb);
@@ -258,18 +272,13 @@
     var overrides = loadNameOverrides();
     overrides[String(id)] = newName;
     saveNameOverrides(overrides);
-    // Update live NFTS
     var n = NFTS.find(function (x) { return String(x.id) === String(id); });
     if (n) n.name = newName;
-    // Also update custom if it's one
-    var customs = loadCustomNfts();
-    var ci = customs.findIndex(function (x) { return String(x.id) === String(id); });
-    if (ci !== -1) { customs[ci].name = newName; saveCustomNfts(customs); }
   }
 
   // ── Delete ───────────────────────────────────────────────
 
-  function confirmDelete(nft, isCustom) {
+  function confirmDelete(nft, isServerPiece) {
     var modal = document.createElement('div');
     modal.style.cssText = [
       'position:fixed',
@@ -286,9 +295,9 @@
       '<div style="background:#111;border:0.5px solid rgba(255,100,100,0.3);border-radius:10px;padding:2rem 1.5rem;max-width:340px;width:100%;text-align:center;font-family:Georgia,serif;">',
         '<div style="font-size:13px;color:rgba(255,255,255,0.85);margin-bottom:0.5rem;letter-spacing:0.05rem;">Delete this piece?</div>',
         '<div style="font-size:11px;color:rgba(255,100,100,0.7);margin-bottom:1.5rem;letter-spacing:0.08rem;">"' + nft.name + '"</div>',
-        (isCustom
-          ? '<div style="font-size:10px;color:rgba(255,255,255,0.3);margin-bottom:1.25rem;">This was added via admin and will be permanently removed.</div>'
-          : '<div style="font-size:10px;color:rgba(255,255,255,0.3);margin-bottom:1.25rem;">This is a built-in piece. It will be hidden from the gallery.</div>'
+        (isServerPiece
+          ? '<div style="font-size:10px;color:rgba(255,255,255,0.3);margin-bottom:1.25rem;">This will be permanently removed for everyone.</div>'
+          : '<div style="font-size:10px;color:rgba(255,255,255,0.3);margin-bottom:1.25rem;">This is a built-in piece. It will be hidden from your view.</div>'
         ),
         '<div style="display:flex;gap:10px;">',
           '<button id="conf-cancel" style="flex:1;padding:10px;background:transparent;border:0.5px solid rgba(255,255,255,0.2);color:rgba(255,255,255,0.5);font-family:Georgia,serif;font-size:11px;letter-spacing:0.15rem;border-radius:4px;cursor:pointer;text-transform:uppercase;">Cancel</button>',
@@ -302,127 +311,100 @@
     document.getElementById('conf-cancel').addEventListener('click', function () {
       document.body.removeChild(modal);
     });
-
     document.getElementById('conf-delete').addEventListener('click', function () {
       document.body.removeChild(modal);
-      doDelete(nft, isCustom);
+      doDelete(nft, isServerPiece);
     });
   }
 
-  function doDelete(nft, isCustom) {
-    if (isCustom) {
-      // Remove from localStorage customs
-      var customs = loadCustomNfts().filter(function (c) { return String(c.id) !== String(nft.id); });
-      saveCustomNfts(customs);
+  function doDelete(nft, isServerPiece) {
+    if (isServerPiece) {
+      // Delete from server
+      fetch(API + '/delete?id=' + encodeURIComponent(nft.id), {
+        method: 'DELETE',
+        headers: { 'X-Admin-Token': 'ITIA4Life22' }
+      }).catch(function () {});
     } else {
-      // Track hidden built-ins
+      // Hide locally
       var hidden = getHidden();
       if (hidden.indexOf(String(nft.id)) === -1) hidden.push(String(nft.id));
       saveHidden(hidden);
     }
-    // Remove from live NFTS
     var idx = NFTS.findIndex(function (n) { return String(n.id) === String(nft.id); });
     if (idx !== -1) NFTS.splice(idx, 1);
     renderManageList(document.getElementById('adm-search').value.toLowerCase().trim());
   }
 
-  var HIDDEN_KEY = 'itia_hidden_ids';
-  function getHidden()    { try { return JSON.parse(localStorage.getItem(HIDDEN_KEY) || '[]'); } catch (e) { return []; } }
-  function saveHidden(h)  { localStorage.setItem(HIDDEN_KEY, JSON.stringify(h)); }
-
-  // Called at startup to apply hidden list
-  window.ITIA_applyHidden = function () {
-    var hidden = getHidden();
-    if (!hidden.length) return;
-    for (var i = NFTS.length - 1; i >= 0; i--) {
-      if (hidden.indexOf(String(NFTS[i].id)) !== -1) NFTS.splice(i, 1);
-    }
-  };
-
   // ── Add Photo ────────────────────────────────────────────
 
-  // Compress image to fit localStorage (iPhone photos = 3-8MB raw, way over the 5MB limit)
-  function compressImage(file, callback) {
-    var img = new Image();
-    var url = URL.createObjectURL(file);
-    img.onload = function () {
-      URL.revokeObjectURL(url);
-      var maxW = 1200, maxH = 1200;
-      var w = img.width, h = img.height;
-      if (w > maxW) { h = Math.round(h * maxW / w); w = maxW; }
-      if (h > maxH) { w = Math.round(w * maxH / h); h = maxH; }
-      var canvas = document.createElement('canvas');
-      canvas.width = w; canvas.height = h;
-      var ctx = canvas.getContext('2d');
-      ctx.drawImage(img, 0, 0, w, h);
-      // Try quality 0.7, then step down if still too big for localStorage
-      var quality = 0.7;
-      var dataUrl = canvas.toDataURL('image/jpeg', quality);
-      // ~200KB base64 target
-      while (dataUrl.length > 250000 && quality > 0.2) {
-        quality -= 0.1;
-        dataUrl = canvas.toDataURL('image/jpeg', quality);
-      }
-      callback(dataUrl);
-    };
-    img.onerror = function () { URL.revokeObjectURL(url); callback(null); };
-    img.src = url;
-  }
-
   function handleAdd() {
-    var name    = (document.getElementById('adm-name').value || '').trim();
-    var fileEl  = document.getElementById('adm-file');
-    var urlVal  = (document.getElementById('adm-url').value  || '').trim();
-    var msg     = document.getElementById('adm-add-msg');
+    var name   = (document.getElementById('adm-name').value || '').trim();
+    var fileEl = document.getElementById('adm-file');
+    var urlVal = (document.getElementById('adm-url').value  || '').trim();
+    var msg    = document.getElementById('adm-add-msg');
 
-    if (!name)              { showMsg(msg, 'Enter a name.', '#ff8888'); return; }
-    if (!fileEl.files.length && !urlVal) { showMsg(msg, 'Provide a file or URL.', '#ff8888'); return; }
+    if (!name)                                  { showMsg(msg, 'Enter a name.', '#ff8888'); return; }
+    if (!fileEl.files.length && !urlVal)        { showMsg(msg, 'Provide a file or URL.', '#ff8888'); return; }
 
     if (fileEl.files.length) {
-      showMsg(msg, 'Compressing...', 'rgba(255,255,255,0.4)');
-      compressImage(fileEl.files[0], function (dataUrl) {
-        addNft(name, dataUrl, msg);
+      showMsg(msg, 'Uploading...', 'rgba(255,255,255,0.4)');
+      var formData = new FormData();
+      formData.append('name', name);
+      formData.append('file', fileEl.files[0]);
+      fetch(API + '/upload', {
+        method: 'POST',
+        headers: { 'X-Admin-Token': 'ITIA4Life22' },
+        body: formData
+      })
+      .then(function (r) { return r.json(); })
+      .then(function (res) {
+        if (res.ok) {
+          onAdded(res.piece, msg);
+        } else {
+          showMsg(msg, 'Upload failed: ' + (res.error || 'unknown error'), '#ff8888');
+        }
+      })
+      .catch(function (e) {
+        showMsg(msg, 'Upload failed. Check connection.', '#ff8888');
       });
     } else {
-      addNft(name, urlVal, msg);
+      // URL-based — send to server too so everyone sees it
+      showMsg(msg, 'Saving...', 'rgba(255,255,255,0.4)');
+      fetch(API + '/upload-url', {
+        method: 'POST',
+        headers: { 'X-Admin-Token': 'ITIA4Life22', 'Content-Type': 'application/json' },
+        body: JSON.stringify({ name: name, url: urlVal })
+      })
+      .then(function (r) { return r.json(); })
+      .then(function (res) {
+        if (res.ok) {
+          onAdded(res.piece, msg);
+        } else {
+          showMsg(msg, 'Save failed: ' + (res.error || 'unknown error'), '#ff8888');
+        }
+      })
+      .catch(function () {
+        showMsg(msg, 'Save failed. Check connection.', '#ff8888');
+      });
     }
   }
 
-  function addNft(name, imgSrc, msgEl) {
-    if (!imgSrc) { showMsg(msgEl, 'Failed to read image.', '#ff8888'); return; }
-    var id = 'adm_' + Date.now();
-    var nft = { id: id, name: name, img: imgSrc, bg: [128, 128, 128] };
-    var customs = loadCustomNfts();
-    customs.unshift(nft);
-    try {
-      saveCustomNfts(customs);
-    } catch (e) {
-      // localStorage quota hit — likely still too large even after compression
-      showMsg(msgEl, 'Save failed: image too large. Try a smaller photo.', '#ff8888');
-      return;
+  function onAdded(piece, msgEl) {
+    // Prepend into live NFTS immediately
+    if (!NFTS.find(function (n) { return String(n.id) === String(piece.id); })) {
+      NFTS.unshift(piece);
     }
-
-    // Also save name override so renames persist
-    var overrides = loadNameOverrides();
-    overrides[id] = name;
-    saveNameOverrides(overrides);
-
-    // Prepend into live NFTS immediately — new photos appear at top
-    NFTS.unshift(nft);
-
-    // Clear inputs
     document.getElementById('adm-name').value = '';
     document.getElementById('adm-file').value = '';
     document.getElementById('adm-url').value  = '';
-
-    showMsg(msgEl, '"' + name + '" saved. Reload to confirm.', '#88ff88');
+    showMsg(msgEl, '"' + piece.name + '" saved. Everyone will see it.', '#88ff88');
     renderManageList('');
   }
 
   function showMsg(el, text, color) {
     el.textContent = text;
     el.style.color = color || 'rgba(255,255,255,0.4)';
-    setTimeout(function () { el.textContent = ''; }, 3500);
+    setTimeout(function () { if (el.textContent === text) el.textContent = ''; }, 4000);
   }
 
   // ── Show / Hide panel ────────────────────────────────────
@@ -495,7 +477,7 @@
     pwInput.addEventListener('keydown', function (e) {
       if (e.key === 'Enter') tryLogin();
     });
-  }
+  };
 
   // ── Inject admin trigger into splash ─────────────────────
 
@@ -506,7 +488,6 @@
     var adminBtn = document.createElement('button');
     adminBtn.id = 'admin-trigger';
     adminBtn.textContent = 'ADMIN';
-    adminBtn.title = '';
     adminBtn.style.cssText = [
       'position:absolute',
       'bottom:1.5rem',
@@ -536,7 +517,7 @@
       this.style.borderColor = 'rgba(255,255,255,0.18)';
     });
     adminBtn.addEventListener('click', showLoginModal);
-    // Triple-tap (mobile) or triple-click (desktop) on footer text to trigger
+
     var tapCount = 0, tapTimer = null;
     var resetMs = ('ontouchstart' in window) ? 600 : 1000;
     footer.addEventListener('click', function () {
