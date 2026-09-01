@@ -68,22 +68,22 @@
   // ── Server-side custom NFTs ───────────────────────────────
 
   // Fetches gallery additions from R2/Worker and prepends to NFTS
+  // Returns a promise so callers can wait before rendering
   window.ITIA_loadServerPieces = function () {
     return fetch(API + '/list')
       .then(function (r) { return r.json(); })
       .then(function (pieces) {
         var overrides = loadNameOverrides();
-        pieces.forEach(function (p) {
+        // Server returns newest-first; unshift in reverse so order is preserved
+        for (var i = pieces.length - 1; i >= 0; i--) {
+          var p = pieces[i];
           if (!NFTS.find(function (n) { return String(n.id) === String(p.id); })) {
             if (overrides[String(p.id)]) p.name = overrides[String(p.id)];
             NFTS.unshift(p);
           }
-        });
-        // Re-sort so newest (highest ts) are first, built-ins follow
-        // Server pieces all have a ts field; built-ins don't
-        // Simple stable approach: server pieces first (already prepended newest-first from server)
+        }
       })
-      .catch(function () { /* silently fail — show built-ins */ });
+      .catch(function () { /* silently fail — show built-ins only */ });
   };
 
   // Called by app.js on boot — applies name overrides to built-ins only

@@ -3,8 +3,10 @@ const CONTRACT = '0x0bec5e0483db9b09946c0b37d243d8d8393a6d12';
 // Apply hidden built-ins and name overrides before anything renders
 if (typeof window.ITIA_applyHidden    === 'function') window.ITIA_applyHidden();
 if (typeof window.ITIA_applyAdminData === 'function') window.ITIA_applyAdminData();
-// Fetch server-side additions (R2/Worker) — prepends to NFTS for all visitors
-if (typeof window.ITIA_loadServerPieces === 'function') window.ITIA_loadServerPieces();
+// Fetch server-side additions (R2/Worker) — store promise so enterGallery/startLive/startDreamWalk can wait
+window._serverPiecesReady = (typeof window.ITIA_loadServerPieces === 'function')
+  ? window.ITIA_loadServerPieces()
+  : Promise.resolve();
 // Boot admin trigger on splash
 document.addEventListener('DOMContentLoaded', function(){
   if (typeof window.ITIA_initAdmin === 'function') window.ITIA_initAdmin();
@@ -248,7 +250,8 @@ function enterGallery() {
   hapticTap(); soundOpen();
   document.getElementById('splash').style.display='none';
   document.getElementById('gallery').style.display='block';
-  buildGrid();
+  // Wait for server pieces to load before building grid
+  (window._serverPiecesReady || Promise.resolve()).then(function() { buildGrid(); });
 }
 function goBack() {
   hapticClose(); soundClose();
