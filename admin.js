@@ -341,6 +341,34 @@
 
   // ── Add Photo ────────────────────────────────────────────
 
+  // Compress image to fit localStorage (iPhone photos = 3-8MB raw, way over the 5MB limit)
+  function compressImage(file, callback) {
+    var img = new Image();
+    var url = URL.createObjectURL(file);
+    img.onload = function () {
+      URL.revokeObjectURL(url);
+      var maxW = 1200, maxH = 1200;
+      var w = img.width, h = img.height;
+      if (w > maxW) { h = Math.round(h * maxW / w); w = maxW; }
+      if (h > maxH) { w = Math.round(w * maxH / h); h = maxH; }
+      var canvas = document.createElement('canvas');
+      canvas.width = w; canvas.height = h;
+      var ctx = canvas.getContext('2d');
+      ctx.drawImage(img, 0, 0, w, h);
+      // Try quality 0.7, then step down if still too big for localStorage
+      var quality = 0.7;
+      var dataUrl = canvas.toDataURL('image/jpeg', quality);
+      // ~200KB base64 target
+      while (dataUrl.length > 250000 && quality > 0.2) {
+        quality -= 0.1;
+        dataUrl = canvas.toDataURL('image/jpeg', quality);
+      }
+      callback(dataUrl);
+    };
+    img.onerror = function () { URL.revokeObjectURL(url); callback(null); };
+    img.src = url;
+  }
+
   function handleAdd() {
     var name    = (document.getElementById('adm-name').value || '').trim();
     var fileEl  = document.getElementById('adm-file');
@@ -351,20 +379,28 @@
     if (!fileEl.files.length && !urlVal) { showMsg(msg, 'Provide a file or URL.', '#ff8888'); return; }
 
     if (fileEl.files.length) {
-      var reader = new FileReader();
-      reader.onload = function (e) { addNft(name, e.target.result, msg); };
-      reader.readAsDataURL(fileEl.files[0]);
+      showMsg(msg, 'Compressing...', 'rgba(255,255,255,0.4)');
+      compressImage(fileEl.files[0], function (dataUrl) {
+        addNft(name, dataUrl, msg);
+      });
     } else {
       addNft(name, urlVal, msg);
     }
   }
 
   function addNft(name, imgSrc, msgEl) {
+    if (!imgSrc) { showMsg(msgEl, 'Failed to read image.', '#ff8888'); return; }
     var id = 'adm_' + Date.now();
     var nft = { id: id, name: name, img: imgSrc, bg: [128, 128, 128] };
     var customs = loadCustomNfts();
     customs.unshift(nft);
-    saveCustomNfts(customs);
+    try {
+      saveCustomNfts(customs);
+    } catch (e) {
+      // localStorage quota hit — likely still too large even after compression
+      showMsg(msgEl, 'Save failed: image too large. Try a smaller photo.', '#ff8888');
+      return;
+    }
 
     // Also save name override so renames persist
     var overrides = loadNameOverrides();
@@ -379,7 +415,7 @@
     document.getElementById('adm-file').value = '';
     document.getElementById('adm-url').value  = '';
 
-    showMsg(msgEl, '"' + name + '" added. All gallery modes updated.', '#88ff88');
+    showMsg(msgEl, '"' + name + '" saved. Reload to confirm.', '#88ff88');
     renderManageList('');
   }
 
