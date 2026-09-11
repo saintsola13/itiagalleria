@@ -73,12 +73,10 @@
     return fetch(API + '/list')
       .then(function (r) { return r.json(); })
       .then(function (pieces) {
-        var overrides = loadNameOverrides();
         // Server returns newest-first; unshift in reverse so order is preserved
         for (var i = pieces.length - 1; i >= 0; i--) {
           var p = pieces[i];
           if (!NFTS.find(function (n) { return String(n.id) === String(p.id); })) {
-            if (overrides[String(p.id)]) p.name = overrides[String(p.id)];
             NFTS.unshift(p);
           }
         }
@@ -269,11 +267,28 @@
 
   function handleRename(id, newName) {
     if (!newName) return;
-    var overrides = loadNameOverrides();
-    overrides[String(id)] = newName;
-    saveNameOverrides(overrides);
     var n = NFTS.find(function (x) { return String(x.id) === String(id); });
     if (n) n.name = newName;
+    // Server pieces (have ts) persist via API; built-ins stay local-only
+    if (n && n.ts) {
+      var overrides = loadNameOverrides();
+      if (overrides[String(id)] !== undefined) {
+        delete overrides[String(id)];
+        saveNameOverrides(overrides);
+      }
+      fetch(API + '/rename', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'X-Admin-Token': 'ITIA4Life22'
+        },
+        body: JSON.stringify({ id: id, name: newName })
+      }).catch(function () {});
+    } else {
+      var overrides = loadNameOverrides();
+      overrides[String(id)] = newName;
+      saveNameOverrides(overrides);
+    }
   }
 
   // ── Delete ───────────────────────────────────────────────
