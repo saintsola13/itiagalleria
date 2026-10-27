@@ -130,6 +130,7 @@
     panel.innerHTML = [
       '<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:1.5rem;border-bottom:0.5px solid rgba(255,255,255,0.1);padding-bottom:1rem;">',
         '<span style="font-size:0.85rem;letter-spacing:0.3rem;text-transform:uppercase;color:rgba(255,255,255,0.6)">Admin</span>',
+        '<a href="#" id="adm-jump-family" onclick="var t=document.getElementById(\'adm-family\');if(t)t.scrollIntoView({behavior:\'smooth\'});return false;" style="font-size:10px;letter-spacing:0.15rem;color:rgba(255,255,255,0.45);text-transform:uppercase;text-decoration:none;margin-left:auto;margin-right:12px;">Family &darr;</a>',
         '<button id="admin-logout" style="background:transparent;border:0.5px solid rgba(255,255,255,0.2);color:rgba(255,255,255,0.4);font-family:Georgia,serif;font-size:10px;letter-spacing:0.15rem;padding:5px 12px;cursor:pointer;border-radius:3px;text-transform:uppercase;">Log Out</button>',
       '</div>',
 
@@ -154,13 +155,16 @@
       '</div>',
 
       // ── Manage ──
-      '<div>',
+      '<div id="adm-manage">',
         '<div style="font-size:11px;letter-spacing:0.2rem;color:rgba(255,255,255,0.45);text-transform:uppercase;margin-bottom:0.75rem;">Manage Gallery</div>',
         '<input id="adm-search" placeholder="Filter by name..." style="',
           'width:100%;background:transparent;border:0.5px solid rgba(255,255,255,0.18);color:#fff;',
           'font-family:Georgia,serif;font-size:12px;padding:8px 12px;border-radius:4px;margin-bottom:10px;outline:none;" />',
         '<div id="adm-list" style="max-height:400px;overflow-y:auto;"></div>',
       '</div>',
+
+      // ── I T I A Family (separate storage; see family.js) ──
+      '<div id="adm-family" style="margin-top:2rem;padding-top:1.5rem;border-top:0.5px solid rgba(255,255,255,0.1);"></div>',
     ].join('');
 
     overlay.appendChild(panel);
@@ -174,6 +178,7 @@
     overlay.addEventListener('click', function (e) {
       if (e.target === overlay) hideAdminPanel();
     });
+    if (window.ITIA_Family) window.ITIA_Family.mountAdmin(document.getElementById('adm-family'), 'ITIA4Life22');
   }
 
   // ── Manage list ──────────────────────────────────────────
@@ -429,6 +434,7 @@
     var ov = document.getElementById('admin-overlay');
     ov.style.display = 'flex';
     renderManageList('');
+    if (window.ITIA_Family) window.ITIA_Family.refreshAdmin();
   }
 
   function hideAdminPanel() {
