@@ -43,15 +43,48 @@ function hapticClose()  { haptic(6); }
 function hapticPause()  { haptic([10, 20, 10]); }
 
 let current = 0, lbContext = 'gallery';
+function pieceSrc(n) { if (!n) return ''; var m = window.ITIA_FULL || {}; return m[String(n.id)] || n.full || n.img || ''; }
+function pieceDownloadName(n) {
+  var base = String((n && n.name) || 'itia').replace(/[^A-Za-z0-9]+/g, '-').replace(/^-|-$/g, '') || 'itia';
+  var src = pieceSrc(n);
+  var ext = (src.match(/\.(png|jpe?g|webp)(?:\?|$)/i) || [, 'jpg'])[1].toLowerCase();
+  if (ext === 'jpeg') ext = 'jpg';
+  return base + '-4k.' + ext;
+}
 function openLB(i, context) {
   current = i; lbContext = context || 'gallery';
   const n = NFTS[i];
-  document.getElementById('lb-img').src = n.img;
+  const src = pieceSrc(n);
+  var lbImg = document.getElementById('lb-img');
+  lbImg.src = n.img;
+  if (src && src !== n.img) {
+    var want = i, pre = new Image();
+    pre.onload = function () { if (current === want) lbImg.src = src; };
+    pre.src = src;
+  }
   document.getElementById('lb-img').alt = n.name;
   document.getElementById('lb-name').textContent = n.name;
   document.getElementById('lb-sub').textContent = 'IThinkItsArt \u00b7 Ethereum';
   document.getElementById('lb-counter').textContent = (i + 1) + ' of ' + NFTS.length;
   document.getElementById('lb-nav').classList.toggle('hidden', lbContext === 'dreamwalk');
+  var dl = document.getElementById('lb-dl');
+  if (dl) {
+    dl.href = src;
+    dl.textContent = (src !== n.img) ? 'Download 4K' : 'Download';
+    dl.setAttribute('download', pieceDownloadName(n));
+    dl.onclick = function (e) {
+      e.preventDefault();
+      fetch(src).then(function (r) { return r.blob(); }).then(function (b) {
+        var a = document.createElement('a');
+        a.href = URL.createObjectURL(b);
+        a.download = pieceDownloadName(n);
+        document.body.appendChild(a);
+        a.click();
+        a.remove();
+        setTimeout(function () { URL.revokeObjectURL(a.href); }, 2000);
+      }).catch(function () { window.open(src, '_blank'); });
+    };
+  }
   document.getElementById('overlay').classList.add('on');
   soundOpen(); hapticOpen();
 }

@@ -35,8 +35,11 @@
     .dw-piece .dw-label { font-size: 10px; color: rgba(255,255,255,0.88); letter-spacing: 0.12rem; font-family: Georgia, serif; text-align: center; white-space: nowrap; pointer-events: none; text-shadow: 0 1px 10px rgba(0,0,0,0.55); }
     #overlay { display: none; position: fixed; inset: 0; background: rgba(255,255,255,0.0); z-index: 500; align-items: center; justify-content: center; padding: 1rem; background: rgba(0,0,0,0.85); }
     #overlay.on { display: flex; }
-    #lightbox { background: #111; border: 0.5px solid rgba(255,255,255,0.12); border-radius: 10px; max-width: 500px; width: 100%; max-height: 92vh; overflow-y: auto; }
-    #lb-img { width: 100%; aspect-ratio: 1; object-fit: cover; display: block; border-radius: 10px 10px 0 0; background: #1a1a1a; }
+    #lightbox { background: #111; border: 0.5px solid rgba(255,255,255,0.12); border-radius: 10px; max-width: min(96vw, 1800px); width: auto; max-height: 96vh; overflow-y: auto; }
+    #lb-img { width: auto; max-width: 96vw; height: auto; max-height: 82vh; object-fit: contain; display: block; margin: 0 auto; border-radius: 10px 10px 0 0; background: #1a1a1a; }
+    #lb-dl { display: block; width: 100%; margin-top: 8px; padding: 10px; font-size: 12px; border-radius: 5px; border: 0.5px solid rgba(255,255,255,0.15); background: transparent; color: rgba(255,255,255,0.7); cursor: pointer; font-family: Georgia, serif; letter-spacing: 0.08rem; text-align: center; text-decoration: none; transition: all 0.2s; }
+    @media (max-width: 700px) { #overlay { padding: 0.75rem 0.75rem 4.5rem; } #lightbox { max-height: calc(100vh - 5.5rem); } #lb-img { max-height: 56vh; } }
+    #lb-dl:hover { background: rgba(255,255,255,0.06); color: #fff; border-color: rgba(255,255,255,0.35); }
     #lb-body { padding: 1.25rem; }
     #lb-top { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 6px; }
     #lb-name { font-size: 1.15rem; font-weight: 400; color: #fff; font-family: Georgia, serif; }
@@ -120,6 +123,7 @@
         <button onclick="nav(-1)">← Prev</button>
         <button onclick="nav(1)">Next →</button>
       </div>
+      <a id="lb-dl" href="#" download>Download 4K</a>
       <div id="lb-counter"></div>
     </div>
   </div>
@@ -161,9 +165,10 @@
 <script src="sky7.js"></script>
 <script src="nfts.js"></script>
 <script src="new.js?v=10"></script>
+<script src="full.js?v=1"></script>
 <script src="family.js?v=1"></script>
 <script src="admin.js?v=3"></script>
-<script src="app.js?v=2"></script>
+<script src="app.js?v=4"></script>
 <script>
   (function(){
     var audio = document.getElementById('bg-audio');
