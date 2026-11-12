@@ -47,12 +47,58 @@
         var img = el('img'); img.src = m.img; img.alt = m.name || ''; img.loading = 'lazy';
         img.referrerPolicy = 'no-referrer';
         frame.appendChild(img);
+        frame.style.cursor = 'zoom-in';
+        frame.addEventListener('click', (function (mm) { return function () { openFamPhoto(mm); }; })(m));
       }
       var nm = el('div'); nm.className = 'fam-name';
       nm.textContent = (m && m.name) ? m.name : '\u00a0';
       card.appendChild(frame); card.appendChild(nm);
       g.appendChild(card);
     });
+  }
+
+  // ── Photo viewer (tap a photo → big view + Download 4K) ───
+  // Own overlay; never touches the gallery lightbox or NFTS.
+  var famLB = null;
+  function famFull(m) { var f = window.ITIA_FAMILY_FULL || {}; return (m && f[String(m.id)]) || ''; }
+  function famFileName(m) { return String((m && m.name) || 'ITIA-Family').replace(/[^A-Za-z0-9 _-]+/g, '').trim().replace(/\s+/g, '-') + '-4k.jpg'; }
+  function closeFamPhoto() { if (famLB) famLB.style.display = 'none'; }
+  function openFamPhoto(m) {
+    if (!m || !m.img) return;
+    call('hapticTap');
+    if (!famLB) {
+      famLB = el('div', 'display:none;position:fixed;inset:0;z-index:1000;background:#000;flex-direction:column;align-items:center;justify-content:center;gap:14px;padding:16px 16px 76px;box-sizing:border-box;');
+      famLB.id = 'fam-lb';
+      var x = el('button', 'position:absolute;top:14px;right:14px;background:transparent;border:1px solid rgba(255,255,255,0.35);color:rgba(255,255,255,0.85);font-family:Georgia,serif;font-size:11px;letter-spacing:0.15rem;padding:7px 16px;cursor:pointer;text-transform:uppercase;', 'Close');
+      x.addEventListener('click', function (e) { e.stopPropagation(); closeFamPhoto(); });
+      var im = el('img', 'max-width:94vw;max-height:72vh;object-fit:contain;display:block;');
+      im.id = 'fam-lb-img'; im.referrerPolicy = 'no-referrer';
+      var nm = el('div', 'font-family:Georgia,serif;letter-spacing:0.2rem;color:#fff;font-size:14px;text-transform:uppercase;');
+      nm.id = 'fam-lb-name';
+      var dl = el('a', 'font-family:Georgia,serif;font-size:11px;letter-spacing:0.15rem;text-transform:uppercase;color:#fff;border:1px solid rgba(255,255,255,0.45);padding:8px 18px;text-decoration:none;', 'Download');
+      dl.id = 'fam-lb-dl'; dl.setAttribute('download', '');
+      dl.addEventListener('click', function (e) {
+        e.preventDefault(); e.stopPropagation();
+        var href = dl.getAttribute('href'), name = dl.getAttribute('download') || 'ITIA-Family-4k.jpg';
+        fetch(href).then(function (r) { if (!r.ok) throw 0; return r.blob(); }).then(function (b) {
+          var u = URL.createObjectURL(b), a = document.createElement('a');
+          a.href = u; a.download = name; document.body.appendChild(a); a.click(); a.remove();
+          setTimeout(function () { URL.revokeObjectURL(u); }, 4000);
+        }).catch(function () { window.open(href, '_blank'); });
+      });
+      famLB.appendChild(x); famLB.appendChild(im); famLB.appendChild(nm); famLB.appendChild(dl);
+      famLB.addEventListener('click', function (e) { if (e.target === famLB) closeFamPhoto(); });
+      document.addEventListener('keydown', function (e) { if (e.key === 'Escape') closeFamPhoto(); });
+      document.body.appendChild(famLB);
+    }
+    var full = famFull(m), img = document.getElementById('fam-lb-img'), dlEl = document.getElementById('fam-lb-dl');
+    img.src = m.img; img.alt = m.name || '';
+    document.getElementById('fam-lb-name').textContent = m.name || '';
+    dlEl.setAttribute('href', full || m.img);
+    dlEl.setAttribute('download', famFileName(m));
+    dlEl.textContent = full ? 'Download 4K' : 'Download';
+    if (full) { var pre = new Image(); pre.onload = function () { if (famLB.style.display !== 'none' && dlEl.getAttribute('href') === full) img.src = full; }; pre.src = full; }
+    famLB.style.display = 'flex';
   }
 
   window.ITIA_openFamily = function () {
@@ -65,6 +111,7 @@
   };
   window.ITIA_closeFamily = function () {
     call('hapticClose'); call('soundClose');
+    closeFamPhoto();
     document.getElementById('family').style.display = 'none';
     document.getElementById('splash').style.display = 'flex';
   };
